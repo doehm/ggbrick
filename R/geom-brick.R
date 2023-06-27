@@ -1,4 +1,16 @@
 #' stat_brick
+#'
+#' @param mapping
+#' @param data
+#' @param geom
+#' @param position
+#' @param na.rm
+#' @param show.legend
+#' @param inherit.aes
+#' @param brick_layers
+#' @param bricks_per_layer
+#' @param type
+#' @param ...
 stat_brick <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
@@ -22,7 +34,7 @@ stat_brick <- function(mapping = NULL, data = NULL,
   )
 }
 
-#' StatBrick
+# StatBrick
 StatBrick <- ggproto("StatBrick", Stat,
                      required_aes = c("x", "y"),
                      setup_params = function(data, params) {
@@ -33,8 +45,8 @@ StatBrick <- ggproto("StatBrick", Stat,
                                               type = params$type
                                               ) {
 
-                       dat_1 <- data |>
-                         group_by(x, PANEL) |>
+                       dat_1 <- data %>%
+                         group_by(x, PANEL) %>%
                          summarise(y = sum(y), .groups = "drop")
 
                        if(max(dat_1$y) > bricks_per_layer*brick_layers) {
@@ -46,14 +58,14 @@ StatBrick <- ggproto("StatBrick", Stat,
                          r <- 1
                        }
 
-                       dat_1 <- dat_1 |>
+                       dat_1 <- dat_1 %>%
                          mutate(y = round_preserve_sum(r*y))
 
                        do_fill <- "fill" %in% colnames(data)
 
                        dat_out <- NULL
                        for(k in 1:nrow(dat_1)) {
-                         x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r) |>
+                         x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r) %>%
                            mutate(
                              x = dat_1$x[k],
                              y = dat_1$y[k],
@@ -97,7 +109,13 @@ GeomBrick <- ggproto("GeomBrick", GeomRect,
                      type = "ordered"
 )
 
-#' Title
+#' Brick chart
+#'
+#' Creates a 'waffle' style chart with the aesthetic of a brick wall. Usage is
+#' similar to `geom_col` where you supply counts as the height of the bar. Each
+#' whole brick represents 1 unit. Two half bricks equal one whole brick. Where
+#' the count exceeds the number of brick layers, the number of bricks is scaled
+#' to retain the brick wall aesthetic.
 #'
 #' @param mapping Set of aesthetic mappings created by [aes()]. If specified and
 #'   `inherit.aes = TRUE` (the default), it is combined with the default mapping
@@ -140,11 +158,16 @@ GeomBrick <- ggproto("GeomBrick", GeomRect,
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param ... Dots.
 #'
+#' @import dplyr
+#' @import ggplot2
+#' @importFrom purrr map_dfr
+#'
 #' @return Grob
 #' @export
 #'
 #' @examples
 #' library(ggplot2)
+#' library(dplyr)
 #' mpg |>
 #'   count(class, drv) |>
 #'   ggplot() +

@@ -1,4 +1,16 @@
 # brick row
+#' Title
+#'
+#' @param layer
+#' @param width
+#' @param brick_height
+#' @param brick_width
+#' @param gap
+#'
+#' @return
+#' @export
+#'
+#' @examples
 brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = seq(1, 1+(width-1)*brick_width, brick_width),
@@ -10,6 +22,18 @@ brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0
 }
 
 # half brick row
+#' Title
+#'
+#' @param layer
+#' @param width
+#' @param brick_height
+#' @param brick_width
+#' @param gap
+#'
+#' @return
+#' @export
+#'
+#' @examples
 half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = c(1, seq(1, 1+(width-1)*brick_width, brick_width) + brick_width/2),
@@ -21,6 +45,17 @@ half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, ga
 }
 
 # build the wall
+#' Title
+#'
+#' @param height
+#' @param width
+#' @param start_height
+#' @param r
+#'
+#' @return
+#' @export
+#'
+#' @examples
 build_wall <- function(height, width, start_height = 0, r = 1) {
   brick_height <- 0.9/width*2/5
   brick_width <- 0.9/width
@@ -32,7 +67,7 @@ build_wall <- function(height, width, start_height = 0, r = 1) {
     } else {
       half_brick_row(.x, width, brick_height, brick_width, gap)
     }
-  }) |>
+  }) %>%
     mutate(
       brick_id = 1:n(),
       xmin = xmin-0.45,
@@ -43,25 +78,54 @@ build_wall <- function(height, width, start_height = 0, r = 1) {
 }
 
 # build wal brick by brick
+#' Title
+#'
+#' @param n_bricks
+#' @param width
+#' @param r
+#'
+#' @return
+#' @export
+#'
+#' @examples
 build_wall_by_brick <- function(n_bricks, width, r = 1) {
   ht <- ceiling(n_bricks/width)
-  build_wall(ht, width, r = r) |>
-    arrange(ymin, desc(brick_type)) |>
-    mutate(brick_type_cm = cumsum(brick_type)) |>
+  build_wall(ht, width, r = r) %>%
+    arrange(ymin, desc(brick_type)) %>%
+    mutate(brick_type_cm = cumsum(brick_type)) %>%
     filter(brick_type_cm <= n_bricks)
 }
 
 # round preserve sum
+#' Title
+#'
+#' @param x
+#' @param digits
+#'
+#' @return
+#' @export
+#'
+#' @examples
 round_preserve_sum <- function(x, digits = 0) {
-  up <- 10 ^ digits
-  x <- x * up
+  up <- 10^digits
+  x <- x*up
   y <- floor(x)
   indices <- tail(order(x-y), round(sum(x)) - sum(y))
   y[indices] <- y[indices] + 1
-  y / up
+  y/up
 }
 
 # full vector
+#' Title
+#'
+#' @param fill
+#' @param n
+#' @param val
+#'
+#' @return
+#' @export
+#'
+#' @examples
 make_new_fill <- function(fill, n, val) {
   val_cm <- c(0, cumsum(val))
   n_cm <- c(0, cumsum(n))
@@ -74,6 +138,15 @@ make_new_fill <- function(fill, n, val) {
 }
 
 # switch position for soft random
+#' Title
+#'
+#' @param x
+#' @param n
+#'
+#' @return
+#' @export
+#'
+#' @examples
 switch_pos <- function(x, n) {
   starting_pos <- sample(1:length(x), n)
   dist <- -15:15
