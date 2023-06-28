@@ -2,13 +2,21 @@
 % Please edit documentation in R/helpers.R
 \name{brick_row}
 \alias{brick_row}
-\title{Title}
+\title{Brick row}
 \usage{
 brick_row(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125)
 }
 \arguments{
-\item{gap}{}
+\item{layer}{Brick layer}
+
+\item{width}{Number of bricks in the layer}
+
+\item{brick_height}{Brick height}
+
+\item{brick_width}{Brick width}
+
+\item{gap}{Gap between the bricks}
 }
 \description{
-Title
+Brick row
 }

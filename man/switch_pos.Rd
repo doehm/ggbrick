@@ -2,13 +2,15 @@
 % Please edit documentation in R/helpers.R
 \name{switch_pos}
 \alias{switch_pos}
-\title{Title}
+\title{Switch position for soft random}
 \usage{
 switch_pos(x, n)
 }
 \arguments{
-\item{n}{}
+\item{x}{Vector to switch values in}
+
+\item{n}{Number to switch}
 }
 \description{
-Title
+Switch position for soft random
 }

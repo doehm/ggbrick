@@ -2,13 +2,17 @@
 % Please edit documentation in R/helpers.R
 \name{build_wall_by_brick}
 \alias{build_wall_by_brick}
-\title{Title}
+\title{build wall brick by brick}
 \usage{
 build_wall_by_brick(n_bricks, width, r = 1)
 }
 \arguments{
-\item{r}{}
+\item{n_bricks}{Number of bricks}
+
+\item{width}{Width of the wall in bricks}
+
+\item{r}{Scale factor}
 }
 \description{
-Title
+build wall brick by brick
 }

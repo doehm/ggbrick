@@ -2,13 +2,19 @@
 % Please edit documentation in R/helpers.R
 \name{build_wall}
 \alias{build_wall}
-\title{Title}
+\title{Build the wall}
 \usage{
 build_wall(height, width, start_height = 0, r = 1)
 }
 \arguments{
-\item{r}{}
+\item{height}{Height of the wall}
+
+\item{width}{Width of the wall in number of bricks}
+
+\item{start_height}{Starting height of the wall}
+
+\item{r}{Scale factor}
 }
 \description{
-Title
+Build the wall
 }

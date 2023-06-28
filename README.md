@@ -1,5 +1,5 @@
 
-# ggbrick <img src='dev/images/ggbrick.png' align="right" height="240" />
+# ggbrick <img src='dev/images/ggbrick1.png' align="right" height="240" />
 
 Create a ‘waffle’ style chart with the aesthetic of a brick wall.
 
@@ -34,6 +34,11 @@ mpg |>
 
 <img src='dev/images/pic0.png'>
 
+The fill can be randomised to create a different look with
+`type = 'random'` or `type = 'soft_random'`.
+
+<img src='dev/images/pic2.png'>
+
 In this case each brick represents a car (a row) in `mpg`. When the
 number of bricks gets too large, the number of brick layers will be
 capped and the number of bricks will be scaled down. The proportions of
@@ -59,4 +64,4 @@ ggplot() +
   geom_brick(aes(x = 1, y = 96), fill = "firebrick", bricks_per_layer = 8)
 ```
 
-<img src='dev/images/pic2.png'>
+<img src='dev/images/pic3.png'>

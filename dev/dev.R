@@ -32,11 +32,21 @@ mpg |>
   count(class, drv) |>
   ggplot() +
   geom_brick(aes(class, n, fill = drv)) +
-  scale_fill_manual(values = d10)
+  scale_fill_manual(values = d10[c(1, 3, 5)])
 
 ggsave("dev/images/pic0.png", height = 3, width = 8)
 
 ggplot() +
   geom_brick(aes(x = 1, y = 96), fill = "firebrick", bricks_per_layer = 8)
 
-ggsave("dev/images/pic2.png", height = 6, width = 8)
+ggsave("dev/images/pic3.png", height = 6, width = 8)
+
+
+mpg |>
+  count(class, drv) |>
+  # mutate(n = 5*n) |>
+  ggplot() +
+  geom_brick(aes(class, n, fill = drv), type = "random") +
+  scale_fill_manual(values = d10[c(1, 3, 5)])
+
+ggsave("dev/images/pic2.png", height = 3, width = 8)

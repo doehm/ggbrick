@@ -1,16 +1,11 @@
+utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_type_cm',
+                         'tail', 'dnorm'))
+
 #' stat_brick
 #'
-#' @param mapping
-#' @param data
-#' @param geom
-#' @param position
-#' @param na.rm
-#' @param show.legend
-#' @param inherit.aes
-#' @param brick_layers
-#' @param bricks_per_layer
-#' @param type
-#' @param ...
+#' @param geom Geom
+#'
+#' @rdname brick
 stat_brick <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
@@ -96,7 +91,7 @@ StatBrick <- ggproto("StatBrick", Stat,
                      }
 )
 
-#' @export
+#' GeomBrick
 GeomBrick <- ggproto("GeomBrick", GeomRect,
                      default_aes = aes(
                        colour = NA,
@@ -156,14 +151,19 @@ GeomBrick <- ggproto("GeomBrick", GeomRect,
 #' @param brick_layers The number of brick layers. Default is the height of the column divded by
 #' the number of bricks per layer.
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
+#' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param ... Dots.
 #'
 #' @import dplyr
 #' @import ggplot2
 #' @importFrom purrr map_dfr
+#' @importFrom stats dnorm
+#' @importFrom utils tail
 #'
 #' @return Grob
 #' @export
+#'
+#' @name brick
 #'
 #' @examples
 #' library(ggplot2)

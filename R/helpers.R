@@ -1,16 +1,10 @@
-# brick row
-#' Title
+#' Brick row
 #'
-#' @param layer
-#' @param width
-#' @param brick_height
-#' @param brick_width
-#' @param gap
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param layer Brick layer
+#' @param width Number of bricks in the layer
+#' @param brick_height Brick height
+#' @param brick_width Brick width
+#' @param gap Gap between the bricks
 brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = seq(1, 1+(width-1)*brick_width, brick_width),
@@ -21,19 +15,13 @@ brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0
   )
 }
 
-# half brick row
-#' Title
+#' half brick row
 #'
-#' @param layer
-#' @param width
-#' @param brick_height
-#' @param brick_width
-#' @param gap
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param layer Brick layer
+#' @param width Number of bricks in the layer
+#' @param brick_height Brick height
+#' @param brick_width Brick width
+#' @param gap Gap between the bricks
 half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = c(1, seq(1, 1+(width-1)*brick_width, brick_width) + brick_width/2),
@@ -44,18 +32,12 @@ half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, ga
   )
 }
 
-# build the wall
-#' Title
+#' Build the wall
 #'
-#' @param height
-#' @param width
-#' @param start_height
-#' @param r
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param height Height of the wall
+#' @param width Width of the wall in number of bricks
+#' @param start_height Starting height of the wall
+#' @param r Scale factor
 build_wall <- function(height, width, start_height = 0, r = 1) {
   brick_height <- 0.9/width*2/5
   brick_width <- 0.9/width
@@ -77,17 +59,11 @@ build_wall <- function(height, width, start_height = 0, r = 1) {
     )
 }
 
-# build wal brick by brick
-#' Title
+#' build wall brick by brick
 #'
-#' @param n_bricks
-#' @param width
-#' @param r
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param n_bricks Number of bricks
+#' @param width Width of the wall in bricks
+#' @param r Scale factor
 build_wall_by_brick <- function(n_bricks, width, r = 1) {
   ht <- ceiling(n_bricks/width)
   build_wall(ht, width, r = r) %>%
@@ -96,16 +72,10 @@ build_wall_by_brick <- function(n_bricks, width, r = 1) {
     filter(brick_type_cm <= n_bricks)
 }
 
-# round preserve sum
-#' Title
+#' round preserve sum
 #'
-#' @param x
-#' @param digits
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param x A number of vector
+#' @param digits Number of digits
 round_preserve_sum <- function(x, digits = 0) {
   up <- 10^digits
   x <- x*up
@@ -115,17 +85,13 @@ round_preserve_sum <- function(x, digits = 0) {
   y/up
 }
 
-# full vector
-#' Title
+#' Fill
 #'
-#' @param fill
-#' @param n
-#' @param val
+#' Makes the vector for the fill aesthetic
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param fill The fill vector
+#' @param n Vector representing the number of bricks for the fill level
+#' @param val Vector of length the same as fill of with 1 o 0.5 for whole or helf bricks
 make_new_fill <- function(fill, n, val) {
   val_cm <- c(0, cumsum(val))
   n_cm <- c(0, cumsum(n))
@@ -137,16 +103,10 @@ make_new_fill <- function(fill, n, val) {
   new_fill
 }
 
-# switch position for soft random
-#' Title
+#' Switch position for soft random
 #'
-#' @param x
-#' @param n
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param x Vector to switch values in
+#' @param n Number to switch
 switch_pos <- function(x, n) {
   starting_pos <- sample(1:length(x), n)
   dist <- -15:15

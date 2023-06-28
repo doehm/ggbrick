@@ -2,13 +2,15 @@
 % Please edit documentation in R/helpers.R
 \name{round_preserve_sum}
 \alias{round_preserve_sum}
-\title{Title}
+\title{round preserve sum}
 \usage{
 round_preserve_sum(x, digits = 0)
 }
 \arguments{
-\item{digits}{}
+\item{x}{A number of vector}
+
+\item{digits}{Number of digits}
 }
 \description{
-Title
+round preserve sum
 }
