@@ -82,7 +82,6 @@ StatBrick <- ggproto("StatBrick", Stat,
                            n_of_levels <- robust_round(data$y[ids]*r, sum(x$brick_type))
 
                            x$fill <- make_new_fill(fill_levels, n_of_levels, x$brick_type)
-                           if(any(is.na(x$fill))) browser
                            x$fill <- switch(
                              type,
                              "ordered" = x$fill,
