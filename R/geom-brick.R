@@ -33,27 +33,34 @@ stat_brick <- function(mapping = NULL, data = NULL,
 StatBrick <- ggproto("StatBrick", Stat,
                      required_aes = c("x", "y"),
                      setup_params = function(data, params) {
+
+                       dat_1 <- data %>%
+                         group_by(x) %>%
+                         summarise(
+                           y = sum(y),
+                           .groups = "drop"
+                           )
+
+                       if(max(dat_1$y) > params$bricks_per_layer*params$brick_layers) {
+                         params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
+                         message("Number of bricks has been scaled to a maximum of ",
+                                 params$bricks_per_layer*params$brick_layers,
+                                 " bricks. 1 brick equals ", round(1/params$r, 1),
+                                 " units.\nTo adjust, increase the number of 'brick_layers' and/or 'bricks_per_layer'")
+                       } else {
+                         params$r <- 1
+                       }
+
                        return(params)
                      },
                      compute_panel = function(data, scales, brick_layers = params$brick_layers,
                                               bricks_per_layer = params$bricks_per_layer,
-                                              type = params$type
+                                              type = params$type, r = params$r
                                               ) {
 
                        dat_1 <- data %>%
                          group_by(x, PANEL) %>%
-                         summarise(y = sum(y), .groups = "drop")
-
-                       if(max(dat_1$y) > bricks_per_layer*brick_layers) {
-                         r <- (bricks_per_layer*brick_layers)/max(dat_1$y)
-                         message("Number of bricks has been scaled to a maximum of ", bricks_per_layer*brick_layers,
-                                 " bricks. 1 brick equals ", round(1/r, 1),
-                                 " units.\nTo adjust, increase the number of 'brick_layers' and/or 'bricks_per_layer'")
-                       } else {
-                         r <- 1
-                       }
-
-                       dat_1 <- dat_1 %>%
+                         summarise(y = sum(y), .groups = "drop") %>%
                          mutate(y = round_preserve_sum(r*y))
 
                        do_fill <- "fill" %in% colnames(data)
@@ -72,9 +79,10 @@ StatBrick <- ggproto("StatBrick", Stat,
                          if(do_fill) {
                            ids <- which(data$x == dat_1$x[k])
                            fill_levels <- data$fill[ids]
-                           n_of_levels <- round_preserve_sum(data$y[ids]*r)
+                           n_of_levels <- robust_round(data$y[ids]*r, sum(x$brick_type))
 
                            x$fill <- make_new_fill(fill_levels, n_of_levels, x$brick_type)
+                           if(any(is.na(x$fill))) browser
                            x$fill <- switch(
                              type,
                              "ordered" = x$fill,

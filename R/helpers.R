@@ -85,13 +85,27 @@ round_preserve_sum <- function(x, digits = 0) {
   y/up
 }
 
+#' Robust round
+#'
+#' @param x Vector of values
+#' @param N Value to preserve sum to
+robust_round <- function(x, N) {
+  n <- round(x)
+  add <- N-sum(n)
+  if(add > 0) {
+    id <- sort(x, index.return = TRUE, decreasing = TRUE)$ix[1:add]
+    n[id] <- n[id]+1
+  }
+  n
+}
+
 #' Fill
 #'
 #' Makes the vector for the fill aesthetic
 #'
 #' @param fill The fill vector
 #' @param n Vector representing the number of bricks for the fill level
-#' @param val Vector of length the same as fill of with 1 o 0.5 for whole or helf bricks
+#' @param val Vector of length the same as fill of with 1 o 0.5 for whole or half bricks
 make_new_fill <- function(fill, n, val) {
   val_cm <- c(0, cumsum(val))
   n_cm <- c(0, cumsum(n))
