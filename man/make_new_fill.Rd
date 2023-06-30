@@ -11,7 +11,7 @@ make_new_fill(fill, n, val)
 
 \item{n}{Vector representing the number of bricks for the fill level}
 
-\item{val}{Vector of length the same as fill of with 1 o 0.5 for whole or helf bricks}
+\item{val}{Vector of length the same as fill of with 1 o 0.5 for whole or half bricks}
 }
 \description{
 Makes the vector for the fill aesthetic
