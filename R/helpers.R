@@ -95,6 +95,9 @@ robust_round <- function(x, N) {
   if(add > 0) {
     id <- sort(x, index.return = TRUE, decreasing = TRUE)$ix[1:add]
     n[id] <- n[id]+1
+  } else if(add < 0) {
+    id <- sort(x, index.return = TRUE)$ix[1:abs(add)]
+    n[id] <- n[id]-1
   }
   n
 }
