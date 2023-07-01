@@ -79,13 +79,6 @@ build_wall_by_brick <- function(n_bricks, width, r = 1) {
 robust_round <- function(x, N) {
   n <- round(x)
   add <- N-sum(n)
-  # if(add > 0) {
-  #   id <- sort(x, index.return = TRUE, decreasing = TRUE)$ix[1:add]
-  #   n[id] <- n[id]+1
-  # } else if(add < 0) {
-  #   id <- sort(x, index.return = TRUE)$ix[1:abs(add)]
-  #   n[id] <- n[id]-1
-  # }
   if(add != 0) {
     id <- sort(x, index.return = TRUE, decreasing = add > 0)$ix[1:abs(add)]
     n[id] <- n[id]+sign(add)
