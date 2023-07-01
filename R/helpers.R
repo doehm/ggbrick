@@ -72,19 +72,6 @@ build_wall_by_brick <- function(n_bricks, width, r = 1) {
     filter(brick_type_cm <= n_bricks)
 }
 
-#' round preserve sum
-#'
-#' @param x A number of vector
-#' @param digits Number of digits
-round_preserve_sum <- function(x, digits = 0) {
-  up <- 10^digits
-  x <- x*up
-  y <- floor(x)
-  indices <- tail(order(x-y), round(sum(x)) - sum(y))
-  y[indices] <- y[indices] + 1
-  y/up
-}
-
 #' Robust round
 #'
 #' @param x Vector of values
@@ -92,12 +79,16 @@ round_preserve_sum <- function(x, digits = 0) {
 robust_round <- function(x, N) {
   n <- round(x)
   add <- N-sum(n)
-  if(add > 0) {
-    id <- sort(x, index.return = TRUE, decreasing = TRUE)$ix[1:add]
-    n[id] <- n[id]+1
-  } else if(add < 0) {
-    id <- sort(x, index.return = TRUE)$ix[1:abs(add)]
-    n[id] <- n[id]-1
+  # if(add > 0) {
+  #   id <- sort(x, index.return = TRUE, decreasing = TRUE)$ix[1:add]
+  #   n[id] <- n[id]+1
+  # } else if(add < 0) {
+  #   id <- sort(x, index.return = TRUE)$ix[1:abs(add)]
+  #   n[id] <- n[id]-1
+  # }
+  if(add != 0) {
+    id <- sort(x, index.return = TRUE, decreasing = add > 0)$ix[1:abs(add)]
+    n[id] <- n[id]+sign(add)
   }
   n
 }
@@ -133,4 +124,31 @@ switch_pos <- function(x, n) {
   y[next_pos] <- x[starting_pos]
   y[starting_pos] <- x[next_pos]
   y
+}
+
+
+#' Robust random
+#'
+#' Ensures the half bricks are randomised in pairs to preserve the total
+#'
+#' @param x x
+#' @param val Value
+robust_random <- function(x, val) {
+  orig <- tibble(
+    x = x,
+    val = val,
+    id = 1:length(x)
+    ) %>%
+    mutate(
+      val_cm = cumsum(val),
+      id = ceiling(val_cm)
+    )
+
+  rand <- orig %>%
+    distinct(id, x) %>%
+    mutate(new_x = sample(x))
+
+  orig %>%
+    left_join(rand, by = "id") %>%
+    pull(new_x)
 }

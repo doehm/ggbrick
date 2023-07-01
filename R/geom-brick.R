@@ -1,5 +1,5 @@
 utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_type_cm',
-                         'tail', 'dnorm'))
+                         'tail', 'dnorm', "new_x", "val_cm"))
 
 #' stat_brick
 #'
@@ -30,85 +30,90 @@ stat_brick <- function(mapping = NULL, data = NULL,
 }
 
 # StatBrick
-StatBrick <- ggproto("StatBrick", Stat,
-                     required_aes = c("x", "y"),
-                     setup_params = function(data, params) {
+StatBrick <- ggproto(
+  "StatBrick",
+  Stat,
+  required_aes = c("x", "y"),
+  setup_params = function(data, params) {
 
-                       dat_1 <- data %>%
-                         group_by(x) %>%
-                         summarise(
-                           y = sum(y),
-                           .groups = "drop"
-                           )
+   dat_1 <- data %>%
+     group_by(x) %>%
+     summarise(
+       y = sum(y),
+       .groups = "drop"
+       )
 
-                       if(max(dat_1$y) > params$bricks_per_layer*params$brick_layers) {
-                         params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
-                         message("Number of bricks has been scaled to a maximum of ",
-                                 params$bricks_per_layer*params$brick_layers,
-                                 " bricks. 1 brick equals ", round(1/params$r, 1),
-                                 " units.\nTo adjust, increase the number of 'brick_layers' and/or 'bricks_per_layer'")
-                       } else {
-                         params$r <- 1
-                       }
+   if(max(dat_1$y) > params$bricks_per_layer*params$brick_layers) {
+     params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
+     message("Number of bricks has been scaled to a maximum of ",
+             params$bricks_per_layer*params$brick_layers,
+             " bricks. 1 brick equals ", round(1/params$r, 1),
+             " units.\nTo adjust, increase the number of 'brick_layers' and/or 'bricks_per_layer'")
+   } else {
+     params$r <- 1
+   }
 
-                       return(params)
-                     },
-                     compute_panel = function(data, scales, brick_layers = params$brick_layers,
-                                              bricks_per_layer = params$bricks_per_layer,
-                                              type = params$type, r = params$r
-                                              ) {
+   return(params)
+  },
+  compute_panel = function(data, scales, brick_layers = params$brick_layers,
+                          bricks_per_layer = params$bricks_per_layer,
+                          type = params$type, r = params$r
+                          ) {
 
-                       dat_1 <- data %>%
-                         group_by(x, PANEL) %>%
-                         summarise(y = sum(y), .groups = "drop") %>%
-                         mutate(y = round_preserve_sum(r*y))
+   dat_1 <- data %>%
+     group_by(x, PANEL) %>%
+     summarise(y = sum(y), .groups = "drop") %>%
+     mutate(y = robust_round(r*y, round(sum(r*y))))
 
-                       do_fill <- "fill" %in% colnames(data)
+   do_fill <- "fill" %in% colnames(data)
 
-                       dat_out <- NULL
-                       for(k in 1:nrow(dat_1)) {
-                         x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r) %>%
-                           mutate(
-                             x = dat_1$x[k],
-                             y = dat_1$y[k],
-                             xmin = xmin + (dat_1$x[k]-1),
-                             xmax = xmax + (dat_1$x[k]-1),
-                             PANEL = dat_1$PANEL[k]
-                           )
+   dat_out <- NULL
+   for(k in 1:nrow(dat_1)) {
+     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r) %>%
+       mutate(
+         x = dat_1$x[k],
+         y = dat_1$y[k],
+         xmin = xmin + (dat_1$x[k]-1),
+         xmax = xmax + (dat_1$x[k]-1),
+         PANEL = dat_1$PANEL[k]
+       )
 
-                         if(do_fill) {
-                           ids <- which(data$x == dat_1$x[k])
-                           fill_levels <- data$fill[ids]
-                           n_of_levels <- robust_round(data$y[ids]*r, sum(x$brick_type))
+     if(do_fill) {
+       ids <- which(data$x == dat_1$x[k])
+       fill_levels <- data$fill[ids]
+       n_of_levels <- robust_round(data$y[ids]*r, sum(x$brick_type))
 
-                           x$fill <- make_new_fill(fill_levels, n_of_levels, x$brick_type)
-                           x$fill <- switch(
-                             type,
-                             "ordered" = x$fill,
-                             "soft_random" = switch_pos(x$fill, floor(nrow(x)/2)),
-                             "random" = sample(x$fill)
-                           )
-                         }
+       x$fill <- make_new_fill(fill_levels, n_of_levels, x$brick_type)
+       x$fill <- switch(
+         type,
+         "ordered" = x$fill,
+         "soft_random" = switch_pos(x$fill, floor(nrow(x)/2)),
+         "random" = robust_random(x$fill, x$brick_type)
+       )
+     }
 
-                         dat_out <- rbind(dat_out, x)
-                       }
+     dat_out <- rbind(dat_out, x)
+   }
 
-                       dat_out$y <- max(dat_out$ymax)
-                       return(dat_out)
-                     }
+   dat_out$y <- max(dat_out$ymax)
+   return(dat_out)
+  }
 )
 
 #' GeomBrick
-GeomBrick <- ggproto("GeomBrick", GeomRect,
-                     default_aes = aes(
-                       colour = NA,
-                       fill = "grey20",
-                       linewidth = 0.5,
-                       linetype = 1,
-                       alpha = NA
-                     ),
-                     brick_layers = 60, bricks_per_layer = 4,
-                     type = "ordered"
+GeomBrick <- ggproto(
+  "GeomBrick",
+  GeomRect,
+  default_aes = aes(
+   colour = NA,
+   fill = "grey20",
+   linewidth = 0.5,
+   linetype = 1,
+   alpha = NA
+  ),
+  brick_layers = 60,
+  bricks_per_layer = 4,
+  type = "ordered"
 )
 
 #' Brick chart

@@ -23,8 +23,8 @@ mpg |>
   count(class, trans) |>
   mutate(n = 5*n) |>
   ggplot() +
-  geom_brick(aes(class, n, fill = trans)) +
-  facet_wrap(~class) +
+  geom_brick(aes(class, n, fill = trans), type = "soft_random") +
+  # facet_wrap(~class) +
   scale_fill_manual(values = d10)
 
 ggsave("dev/images/pic1.png", height = 6, width = 8)
@@ -55,21 +55,22 @@ ggsave("dev/images/pic2.png", height = 3, width = 8)
 
 df <- expand_grid(
   x = 1:6,
-  fill = letters[1:2],
+  fill = letters[1:4],
   facet = 1:3
 ) |>
   mutate(
-    n = rpois(n(), 50)*facet
+    n = rpois(n(), 10)*facet
     )
 
 df |>
   ggplot() +
-  geom_brick(aes(x, n, fill = fill)) +
-  facet_wrap(~facet, nrow = 3)
+  geom_brick(aes(x, n, fill = fill), bricks_per_layer = 3, brick_layers = 200) +
+  facet_wrap(~facet, nrow = 3) +
+  coord_flip()
 
 
 
-x1 <- c(15.39359, 15.04373)
+x1 <- c(15.39359, 15.04373)+0.5
 N <- 31
 
 robust_round <- function(x, N) {
@@ -80,4 +81,54 @@ robust_round <- function(x, N) {
   n
 }
 
+x1 <- c(15.39359, 15.04373)+0.5
+N <- 31
 robust_round(x1, 31)
+
+x1 <- c(15.39359, 15.04373)
+N <- 31
+robust_round(x1, 31)
+
+x1 <- c(15.59359, 15.04373)
+N <- 31
+robust_round(x1, 31)
+
+x <- c("a", "a", "a", "b", "b", "b")
+val <- c(1, 1, 1, 1, 0.5, 0.5)
+robust_random <- function(x, val) {
+  orig <- tibble(
+    x = x,
+    val = val,
+    id = 1:length(x)
+  ) %>%
+    mutate(
+      val_cm = cumsum(val),
+      id = ceiling(val_cm)
+      )
+
+  rand <- orig %>%
+    distinct(id, x) %>%
+    mutate(new_x = sample(x))
+
+  orig |>
+    left_join(rand, by = "id") |>
+    pull(new_x)
+}
+
+robust_random(x, val)
+
+r <- 0.77
+y <- c(25, 235, 205)
+robust_round(y*r, round(sum(y*r)))
+
+expand_grid(
+  x = 0:10,
+  level = letters[1:2]
+) |>
+  mutate(n = ifelse(level == "a", 100-10*x, 10*x)) |>
+  ggplot() +
+  geom_brick(aes(x, n, fill = level), type = "random", colour = "black") +
+  scale_fill_manual(values = c(a = "grey90", b = "firebrick4")) +
+  theme_minimal()
+
+
