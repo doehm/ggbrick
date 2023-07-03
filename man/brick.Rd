@@ -17,6 +17,7 @@ stat_brick(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
+  gap = NULL,
   ...
 )
 
@@ -31,6 +32,7 @@ geom_brick(
   brick_layers = 60,
   bricks_per_layer = 4,
   type = "ordered",
+  gap = NULL,
   ...
 )
 }
@@ -81,6 +83,8 @@ the number of bricks per layer.}
 \item{bricks_per_layer}{The number of bricks per layer. Default 4.}
 
 \item{type}{The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'}
+
+\item{gap}{The space between bricks.}
 
 \item{...}{Dots.}
 

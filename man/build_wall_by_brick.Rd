@@ -4,14 +4,16 @@
 \alias{build_wall_by_brick}
 \title{build wall brick by brick}
 \usage{
-build_wall_by_brick(n_bricks, width, r = 1)
+build_wall_by_brick(n_bricks, width, r = 1, gap = NULL)
 }
 \arguments{
-\item{n_bricks}{Number of bricks}
+\item{n_bricks}{Number of bricks.}
 
-\item{width}{Width of the wall in bricks}
+\item{width}{Width of the wall in bricks.}
 
-\item{r}{Scale factor}
+\item{r}{Scale factor.}
+
+\item{gap}{The space between bricks.}
 }
 \description{
 build wall brick by brick

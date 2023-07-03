@@ -7,9 +7,9 @@
 robust_round(x, N)
 }
 \arguments{
-\item{x}{Vector of values}
+\item{x}{Vector of values.}
 
-\item{N}{Value to preserve sum to}
+\item{N}{Value to preserve sum to.}
 }
 \description{
 Robust round

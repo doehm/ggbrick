@@ -7,9 +7,9 @@
 switch_pos(x, n)
 }
 \arguments{
-\item{x}{Vector to switch values in}
+\item{x}{Vector to switch values in.}
 
-\item{n}{Number to switch}
+\item{n}{Number to switch.}
 }
 \description{
 Switch position for soft random

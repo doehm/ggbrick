@@ -5,7 +5,7 @@
 \alias{GeomBrick}
 \title{GeomBrick}
 \format{
-An object of class \code{GeomBrick} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}, \code{gg}) of length 5.
+An object of class \code{GeomBrick} (inherits from \code{GeomRect}, \code{Geom}, \code{ggproto}, \code{gg}) of length 6.
 }
 \usage{
 GeomBrick

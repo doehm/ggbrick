@@ -10,7 +10,8 @@ stat_brick <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
                        inherit.aes = TRUE, brick_layers = 100,
-                       bricks_per_layer = 4, type = "ordered", ...) {
+                       bricks_per_layer = 4, type = "ordered",
+                       gap = NULL, ...) {
   layer(
     stat = StatBrick,
     data = data,
@@ -23,6 +24,7 @@ stat_brick <- function(mapping = NULL, data = NULL,
       brick_layers = brick_layers,
       bricks_per_layer = bricks_per_layer,
       type = type,
+      gap = gap,
       na.rm = na.rm,
       ...
     )
@@ -57,7 +59,7 @@ StatBrick <- ggproto(
   },
   compute_panel = function(data, scales, brick_layers = params$brick_layers,
                           bricks_per_layer = params$bricks_per_layer,
-                          type = params$type, r = params$r
+                          type = params$type, r = params$r, gap = params$gap
                           ) {
 
    dat_1 <- data %>%
@@ -69,7 +71,7 @@ StatBrick <- ggproto(
 
    dat_out <- NULL
    for(k in 1:nrow(dat_1)) {
-     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r) %>%
+     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r, gap = gap) %>%
        mutate(
          x = dat_1$x[k],
          y = dat_1$y[k],
@@ -113,7 +115,8 @@ GeomBrick <- ggproto(
   ),
   brick_layers = 60,
   bricks_per_layer = 4,
-  type = "ordered"
+  type = "ordered",
+  gap = NULL
 )
 
 #' Brick chart
@@ -165,6 +168,7 @@ GeomBrick <- ggproto(
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param ... Dots.
+#' @param gap The space between bricks.
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -188,7 +192,7 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
                        brick_layers = 60, bricks_per_layer = 4,
-                       type = "ordered", ...) {
+                       type = "ordered", gap = NULL, ...) {
   layer(
     geom = GeomBrick,
     data = data,
@@ -201,6 +205,7 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
       brick_layers = brick_layers,
       bricks_per_layer = bricks_per_layer,
       type = type,
+      gap = gap,
       na.rm = na.rm,
       ...)
   )

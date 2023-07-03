@@ -23,7 +23,7 @@ mpg |>
   count(class, trans) |>
   mutate(n = 5*n) |>
   ggplot() +
-  geom_brick(aes(class, n, fill = trans), type = "soft_random") +
+  geom_brick(aes(class, n, fill = trans), type = "soft_random", gap = 0.015) +
   # facet_wrap(~class) +
   scale_fill_manual(values = d10)
 
@@ -127,8 +127,15 @@ expand_grid(
 ) |>
   mutate(n = ifelse(level == "a", 100-10*x, 10*x)) |>
   ggplot() +
-  geom_brick(aes(x, n, fill = level), type = "random", colour = "black") +
+  geom_brick(aes(x, n, fill = level), colour = "black", linewidth = 0.1) +
   scale_fill_manual(values = c(a = "grey90", b = "firebrick4")) +
-  theme_minimal()
+  scale_x_continuous(breaks = 0:10, labels = paste0(seq(0, 100, 10), "%")) +
+  # scale_y_continuous(breaks = seq(0, 100, 25), labels = paste0(seq(0, 100, 25), "%")) +
+  theme_minimal() +
+  theme(
+    axis.title = element_blank(),
+    plot.background = element_rect(fill = "white", colour = "white")
+  )
 
+ggsave("dev/images/ordered.png", height = 3, width = 8)
 

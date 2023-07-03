@@ -7,9 +7,9 @@
 robust_random(x, val)
 }
 \arguments{
-\item{x}{x}
+\item{x}{x.}
 
-\item{val}{Value}
+\item{val}{Value.}
 }
 \description{
 Ensures the half bricks are randomised in pairs to preserve the total

@@ -1,10 +1,10 @@
 #' Brick row
 #'
-#' @param layer Brick layer
-#' @param width Number of bricks in the layer
-#' @param brick_height Brick height
-#' @param brick_width Brick width
-#' @param gap Gap between the bricks
+#' @param layer Brick layer.
+#' @param width Number of bricks in the layer.
+#' @param brick_height Brick height.
+#' @param brick_width Brick width.
+#' @param gap Gap between the bricks.
 brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = seq(1, 1+(width-1)*brick_width, brick_width),
@@ -17,11 +17,11 @@ brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0
 
 #' half brick row
 #'
-#' @param layer Brick layer
-#' @param width Number of bricks in the layer
-#' @param brick_height Brick height
-#' @param brick_width Brick width
-#' @param gap Gap between the bricks
+#' @param layer Brick layer.
+#' @param width Number of bricks in the layer.
+#' @param brick_height Brick height.
+#' @param brick_width Brick width.
+#' @param gap Gap between the bricks.
 half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125) {
   tibble(
     xmin = c(1, seq(1, 1+(width-1)*brick_width, brick_width) + brick_width/2),
@@ -34,14 +34,15 @@ half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, ga
 
 #' Build the wall
 #'
-#' @param height Height of the wall
-#' @param width Width of the wall in number of bricks
-#' @param start_height Starting height of the wall
-#' @param r Scale factor
-build_wall <- function(height, width, start_height = 0, r = 1) {
+#' @param height Height of the wall.
+#' @param width Width of the wall in number of bricks.
+#' @param start_height Starting height of the wall.
+#' @param r Scale factor.
+#' @param gap The space between bricks.
+build_wall <- function(height, width, start_height = 0, r = 1, gap = NULL) {
   brick_height <- 0.9/width*2/5
   brick_width <- 0.9/width
-  gap <- brick_height/10
+  if(is.null(gap)) gap <- brick_height/10
   scale <- 1/brick_height*width*1/r
   map_dfr(seq(0, height-1, 1), ~{
     if((.x+start_height) %% 2 == 0) {
@@ -61,12 +62,13 @@ build_wall <- function(height, width, start_height = 0, r = 1) {
 
 #' build wall brick by brick
 #'
-#' @param n_bricks Number of bricks
-#' @param width Width of the wall in bricks
-#' @param r Scale factor
-build_wall_by_brick <- function(n_bricks, width, r = 1) {
+#' @param n_bricks Number of bricks.
+#' @param width Width of the wall in bricks.
+#' @param r Scale factor.
+#' @param gap The space between bricks.
+build_wall_by_brick <- function(n_bricks, width, r = 1, gap = NULL) {
   ht <- ceiling(n_bricks/width)
-  build_wall(ht, width, r = r) %>%
+  build_wall(ht, width, r = r, gap = gap) %>%
     arrange(ymin, desc(brick_type)) %>%
     mutate(brick_type_cm = cumsum(brick_type)) %>%
     filter(brick_type_cm <= n_bricks)
@@ -74,8 +76,8 @@ build_wall_by_brick <- function(n_bricks, width, r = 1) {
 
 #' Robust round
 #'
-#' @param x Vector of values
-#' @param N Value to preserve sum to
+#' @param x Vector of values.
+#' @param N Value to preserve sum to.
 robust_round <- function(x, N) {
   n <- round(x)
   add <- N-sum(n)
@@ -90,9 +92,9 @@ robust_round <- function(x, N) {
 #'
 #' Makes the vector for the fill aesthetic
 #'
-#' @param fill The fill vector
-#' @param n Vector representing the number of bricks for the fill level
-#' @param val Vector of length the same as fill of with 1 o 0.5 for whole or half bricks
+#' @param fill The fill vector.
+#' @param n Vector representing the number of bricks for the fill level.
+#' @param val Vector of length the same as fill of with 1 o 0.5 for whole or half bricks.
 make_new_fill <- function(fill, n, val) {
   val_cm <- c(0, cumsum(val))
   n_cm <- c(0, cumsum(n))
@@ -106,8 +108,8 @@ make_new_fill <- function(fill, n, val) {
 
 #' Switch position for soft random
 #'
-#' @param x Vector to switch values in
-#' @param n Number to switch
+#' @param x Vector to switch values in.
+#' @param n Number to switch.
 switch_pos <- function(x, n) {
   starting_pos <- sample(1:length(x), n)
   dist <- -15:15
@@ -124,8 +126,8 @@ switch_pos <- function(x, n) {
 #'
 #' Ensures the half bricks are randomised in pairs to preserve the total
 #'
-#' @param x x
-#' @param val Value
+#' @param x x.
+#' @param val Value.
 robust_random <- function(x, val) {
   orig <- tibble(
     x = x,
