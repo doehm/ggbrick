@@ -1,6 +1,6 @@
 Package: ggbrick
 Type: Package
-Title: Creates a Waffle Style Chart in ggplot2
+Title: Waffle Style Chart with a Brick Layout in ggplot2
 Version: 0.1.0
 Authors@R: 
   person(given = "Daniel",
@@ -8,8 +8,8 @@ Authors@R:
          role = c("aut", "cre"),
          email = "danieloehm@gmail.com")
 Maintainer: Daniel Oehm <danieloehm@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: A new take on the bar chart. Similar to a waffle style chart but
+  instead of squares the layout resembles a brick wall.
 Depends:
   R (>= 3.5.0)
 Imports:

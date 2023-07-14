@@ -167,8 +167,8 @@ GeomBrick <- ggproto(
 #' the number of bricks per layer.
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
-#' @param ... Dots.
 #' @param gap The space between bricks.
+#' @param ... Dots.
 #'
 #' @import dplyr
 #' @import ggplot2
