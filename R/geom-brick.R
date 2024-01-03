@@ -184,8 +184,8 @@ GeomBrick <- ggproto(
 #' @examples
 #' library(ggplot2)
 #' library(dplyr)
-#' mpg |>
-#'   count(class, drv) |>
+#' mpg %>%
+#'   count(class, drv) %>%
 #'   ggplot() +
 #'   geom_brick(aes(class, n, fill = drv))
 geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
