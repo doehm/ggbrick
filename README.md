@@ -29,7 +29,8 @@ mpg |>
   count(class, drv) |>
   ggplot() +
   geom_brick(aes(class, n, fill = drv)) +
-  scale_fill_manual(values = d10)
+  scale_fill_manual(values = d10) +
+  coord_brick()
 ```
 
 <img src='dev/images/pic0.png'>
@@ -51,7 +52,8 @@ mpg |>
   mutate(n = 5*n) |>
   ggplot() +
   geom_brick(aes(class, n, fill = trans)) +
-  scale_fill_manual(values = d10)
+  scale_fill_manual(values = d10) +
+  coord_brick()
 ```
 
 <img src='dev/images/pic1.png'>
@@ -65,3 +67,29 @@ ggplot() +
 ```
 
 <img src='dev/images/pic3.png'>
+
+## Waffle
+
+To create a more familiar waffle chart you can use
+`geom_brick_waffle0()` and `geom_brick_waffle()`. `geom_brick_waffle0()`
+is just `geom_brick_waffle()` with `gap = 0`.
+
+``` r
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick_waffle0(aes(class, n, fill = drv))+
+  coord_brick_waffle()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick_waffle(aes(class, n, fill = drv))+
+  coord_brick_waffle()
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
