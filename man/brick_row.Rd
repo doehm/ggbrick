@@ -4,7 +4,14 @@
 \alias{brick_row}
 \title{Brick row}
 \usage{
-brick_row(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125)
+brick_row(
+  layer,
+  width,
+  brick_height = 1,
+  brick_width = 2.5,
+  gap = 0.125,
+  .geom = "brick"
+)
 }
 \arguments{
 \item{layer}{Brick layer.}
@@ -16,6 +23,8 @@ brick_row(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125)
 \item{brick_width}{Brick width.}
 
 \item{gap}{Gap between the bricks.}
+
+\item{.geom}{Geom type for layering. Either 'brick' or 'brick_waffle'}
 }
 \description{
 Brick row
