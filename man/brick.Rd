@@ -21,7 +21,8 @@ stat_brick_waffle(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = NULL
+  gap = NULL,
+  ...
 )
 
 geom_brick_waffle(
@@ -35,7 +36,8 @@ geom_brick_waffle(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = NULL
+  gap = NULL,
+  ...
 )
 
 geom_brick_waffle0(
@@ -49,7 +51,8 @@ geom_brick_waffle0(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = 0
+  gap = 0,
+  ...
 )
 
 stat_brick(
@@ -147,12 +150,12 @@ the number of bricks per layer.}
 
 \item{gap}{The space between bricks.}
 
+\item{...}{Dots.}
+
 \item{stat}{The statistical transformation to use on the data for this
 layer, either as a `ggproto` `Geom` subclass or as a string naming the
 stat stripped of the `stat_` prefix (e.g. `"count"` rather than
 `"stat_count"`)}
-
-\item{...}{Dots.}
 }
 \value{
 Grob

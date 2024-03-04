@@ -11,7 +11,7 @@ stat_brick_waffle <- function(mapping = NULL, data = NULL,
                        na.rm = FALSE, show.legend = NA,
                        inherit.aes = TRUE, brick_layers = 100,
                        bricks_per_layer = 4, type = "ordered",
-                       gap = NULL) {
+                       gap = NULL, ...) {
   layer(
     stat = StatBrickWaffle,
     data = data,
@@ -25,7 +25,8 @@ stat_brick_waffle <- function(mapping = NULL, data = NULL,
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
-      na.rm = na.rm
+      na.rm = na.rm,
+      ...
     )
   )
 }
@@ -173,6 +174,7 @@ GeomBrickWaffle <- ggproto(
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param gap The space between bricks.
+#' @param ... Dots.
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -197,7 +199,7 @@ geom_brick_waffle <- function(mapping = NULL, data = NULL, stat = "brick_waffle"
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
                        brick_layers = 100, bricks_per_layer = 4,
-                       type = "ordered", gap = NULL) {
+                       type = "ordered", gap = NULL, ...) {
   layer(
     geom = GeomBrickWaffle,
     data = data,
@@ -211,7 +213,8 @@ geom_brick_waffle <- function(mapping = NULL, data = NULL, stat = "brick_waffle"
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
-      na.rm = na.rm)
+      na.rm = na.rm,
+      ...)
   )
 }
 
@@ -221,7 +224,7 @@ geom_brick_waffle0 <- function(mapping = NULL, data = NULL, stat = "brick_waffle
                                position = "identity", na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE,
                                brick_layers = 100, bricks_per_layer = 4,
-                               type = "ordered", gap = 0) {
+                               type = "ordered", gap = 0, ...) {
   layer(
     geom = GeomBrickWaffle,
     data = data,
@@ -235,7 +238,8 @@ geom_brick_waffle0 <- function(mapping = NULL, data = NULL, stat = "brick_waffle
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
-      na.rm = na.rm)
+      na.rm = na.rm,
+      ...)
   )
 }
 

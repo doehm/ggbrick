@@ -5,3 +5,4 @@ dev
 README.Rmd
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+README_files

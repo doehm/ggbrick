@@ -113,7 +113,7 @@ GeomBrick <- ggproto(
    linetype = 1,
    alpha = NA
   ),
-  brick_layers = 60,
+  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
   gap = NULL

@@ -1,7 +1,7 @@
 library(patchwork)
 
 # defaults
-mpg |>
+g4 <- mpg |>
   count(class, drv) |>
   ggplot() +
   geom_brick_waffle(aes(class, n, fill = drv), colour = "black", gap = NULL) +
