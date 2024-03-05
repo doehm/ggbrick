@@ -1,4 +1,11 @@
 library(patchwork)
+library(dplyr)
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick_waffle(aes(class, n)) +
+  coord_brick_waffle()
 
 # defaults
 g4 <- mpg |>
@@ -156,3 +163,14 @@ mpg |>
   ggplot() +
   geom_brick0(aes(class, n, fill = drv), bricks_per_layer = 6) +
   coord_brick(6)
+
+
+
+
+# Too many ----------------------------------------------------------------
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick_waffle(aes(class, 10*n, fill = drv)) +
+  coord_brick_waffle()

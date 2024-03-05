@@ -57,9 +57,9 @@ build_wall <- function(height, width, start_height = 0, r = 1, gap = NULL) {
   scale <- 1/brick_height*width*1/r
   map_dfr(seq(0, height-1, 1), ~{
     if((.x+start_height) %% 2 == 0) {
-      brick_row(.x, width, brick_height, brick_width, gap, .geom = "brick")
+      brick_row(.x, width, brick_height*r, brick_width, gap, .geom = "brick")
     } else {
-      half_brick_row(.x, width, brick_height, brick_width, gap)
+      half_brick_row(.x, width, brick_height*r, brick_width, gap)
     }
   }) %>%
     mutate(
@@ -86,7 +86,7 @@ build_wall_waffle <- function(height, width, start_height = 0, r = 1, gap = NULL
   }
   scale <- 1/brick_height*width*1/r
   map_dfr(seq(0, height-1, 1), ~{
-    brick_row(.x, width, brick_height, brick_width, gap, .geom = "brick_waffle")
+    brick_row(.x, width, brick_height*r, brick_width, gap, .geom = "brick_waffle")
   }) %>%
     mutate(
       brick_id = 1:n(),

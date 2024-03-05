@@ -45,7 +45,7 @@ StatBrick <- ggproto(
        .groups = "drop"
        )
 
-   if(max(dat_1$y) > params$bricks_per_layer*params$brick_layers) {
+   if(max(dat_1$y) > 1000*params$bricks_per_layer*params$brick_layers) {
      params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
      message("Number of bricks has been scaled to a maximum of ",
              params$bricks_per_layer*params$brick_layers,
@@ -192,7 +192,7 @@ GeomBrick <- ggproto(
 geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
-                       brick_layers = 60, bricks_per_layer = 4,
+                       brick_layers = 100, bricks_per_layer = 4,
                        type = "ordered", gap = NULL, ...) {
   layer(
     geom = GeomBrick,
@@ -217,7 +217,7 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
 geom_brick0 <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
-                       brick_layers = 60, bricks_per_layer = 4,
+                       brick_layers = 100, bricks_per_layer = 4,
                        type = "ordered", gap = 0, ...) {
   layer(
     geom = GeomBrick,

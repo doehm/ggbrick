@@ -45,7 +45,7 @@ StatBrickWaffle <- ggproto(
        .groups = "drop"
        )
 
-   if(max(dat_1$y) > params$bricks_per_layer*params$brick_layers) {
+   if(max(dat_1$y) > 1000*params$bricks_per_layer*params$brick_layers) {
      params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
      message("Number of bricks has been scaled to a maximum of ",
              params$bricks_per_layer*params$brick_layers,
