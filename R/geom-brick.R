@@ -71,7 +71,7 @@ StatBrick <- ggproto(
 
    dat_out <- NULL
    for(k in 1:nrow(dat_1)) {
-     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r, gap = gap) %>%
+     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r, gap = gap, col_width = 0.9) %>%
        mutate(
          x = dat_1$x[k],
          y = dat_1$y[k],
@@ -193,7 +193,8 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
                        brick_layers = 100, bricks_per_layer = 4,
-                       type = "ordered", gap = NULL, ...) {
+                       type = "ordered", gap = NULL,
+                       ...) {
   layer(
     geom = GeomBrick,
     data = data,
@@ -218,7 +219,8 @@ geom_brick0 <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
                        brick_layers = 100, bricks_per_layer = 4,
-                       type = "ordered", gap = 0, ...) {
+                       type = "ordered", gap = 0,
+                       ...) {
   layer(
     geom = GeomBrick,
     data = data,

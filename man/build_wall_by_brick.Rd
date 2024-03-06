@@ -4,7 +4,7 @@
 \alias{build_wall_by_brick}
 \title{build wall brick by brick}
 \usage{
-build_wall_by_brick(n_bricks, width, r = 1, gap = NULL)
+build_wall_by_brick(n_bricks, width, r = 1, gap = NULL, col_width = 0.9)
 }
 \arguments{
 \item{n_bricks}{Number of bricks.}
@@ -14,6 +14,8 @@ build_wall_by_brick(n_bricks, width, r = 1, gap = NULL)
 \item{r}{Scale factor.}
 
 \item{gap}{The space between bricks.}
+
+\item{col_width}{Column width.}
 }
 \description{
 build wall brick by brick

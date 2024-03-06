@@ -4,7 +4,14 @@
 \alias{half_brick_row}
 \title{half brick row}
 \usage{
-half_brick_row(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125)
+half_brick_row(
+  layer,
+  width,
+  brick_height = 1,
+  brick_width = 2.5,
+  gap = 0.125,
+  col_width = 0.9
+)
 }
 \arguments{
 \item{layer}{Brick layer.}
@@ -16,6 +23,8 @@ half_brick_row(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125)
 \item{brick_width}{Brick width.}
 
 \item{gap}{Gap between the bricks.}
+
+\item{col_width}{Column_width}
 }
 \description{
 half brick row

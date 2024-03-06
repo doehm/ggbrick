@@ -6,14 +6,14 @@ utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_ty
 #' @param geom Geom
 #'
 #' @rdname brick
-stat_brick_waffle <- function(mapping = NULL, data = NULL,
+stat_waffle <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
                        inherit.aes = TRUE, brick_layers = 100,
                        bricks_per_layer = 4, type = "ordered",
-                       gap = NULL, ...) {
+                       gap = NULL, col_width = 0.9, ...) {
   layer(
-    stat = StatBrickWaffle,
+    stat = StatWaffle,
     data = data,
     mapping = mapping,
     geom = geom,
@@ -25,15 +25,16 @@ stat_brick_waffle <- function(mapping = NULL, data = NULL,
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      col_width = col_width,
       na.rm = na.rm,
       ...
     )
   )
 }
 
-# StatBrickWaffle
-StatBrickWaffle <- ggproto(
-  "StatBrickWaffle",
+# StatWaffle
+StatWaffle <- ggproto(
+  "StatWaffle",
   Stat,
   required_aes = c("x", "y"),
   setup_params = function(data, params) {
@@ -59,7 +60,8 @@ StatBrickWaffle <- ggproto(
   },
   compute_panel = function(data, scales, brick_layers = params$brick_layers,
                           bricks_per_layer = params$bricks_per_layer,
-                          type = params$type, r = params$r, gap = params$gap
+                          type = params$type, r = params$r, gap = params$gap,
+                          col_width = params$col_width
                           ) {
 
     message_bank <- new.env()
@@ -72,7 +74,7 @@ StatBrickWaffle <- ggproto(
 
    dat_out <- NULL
    for(k in 1:nrow(dat_1)) {
-     x <- build_wall_by_brick_waffle(dat_1$y[k], bricks_per_layer, r = r, gap = gap) %>%
+     x <- build_wall_by_brick_waffle(dat_1$y[k], bricks_per_layer, r = r, gap = gap, col_width = col_width) %>%
        mutate(
          x = dat_1$x[k],
          y = dat_1$y[k],
@@ -109,8 +111,8 @@ StatBrickWaffle <- ggproto(
 )
 
 #' GeomBrick
-GeomBrickWaffle <- ggproto(
-  "GeomBrickWaffle",
+GeomWaffle <- ggproto(
+  "GeomWaffle",
   GeomRect,
   default_aes = aes(
    colour = "black",
@@ -122,7 +124,8 @@ GeomBrickWaffle <- ggproto(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = NULL
+  gap = NULL,
+  col_width = 0.9
 )
 
 #' Brick chart
@@ -174,6 +177,7 @@ GeomBrickWaffle <- ggproto(
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param gap The space between bricks.
+#' @param col_width Column width. Default `0.9`.
 #' @param ... Dots.
 #'
 #' @import dplyr
@@ -194,14 +198,15 @@ GeomBrickWaffle <- ggproto(
 #' mpg %>%
 #'   count(class, drv) %>%
 #'   ggplot() +
-#'   geom_brick_waffle(aes(class, n, fill = drv))
-geom_brick_waffle <- function(mapping = NULL, data = NULL, stat = "brick_waffle",
+#'   geom_waffle(aes(class, n, fill = drv))
+geom_waffle <- function(mapping = NULL, data = NULL, stat = "waffle",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
                        brick_layers = 100, bricks_per_layer = 4,
-                       type = "ordered", gap = NULL, ...) {
+                       type = "ordered", gap = NULL, col_width = 0.9,
+                       ...) {
   layer(
-    geom = GeomBrickWaffle,
+    geom = GeomWaffle,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -213,6 +218,7 @@ geom_brick_waffle <- function(mapping = NULL, data = NULL, stat = "brick_waffle"
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      col_width = col_width,
       na.rm = na.rm,
       ...)
   )
@@ -220,13 +226,14 @@ geom_brick_waffle <- function(mapping = NULL, data = NULL, stat = "brick_waffle"
 
 #' @export
 #' @rdname brick
-geom_brick_waffle0 <- function(mapping = NULL, data = NULL, stat = "brick_waffle",
-                               position = "identity", na.rm = FALSE,
-                               show.legend = NA, inherit.aes = TRUE,
-                               brick_layers = 100, bricks_per_layer = 4,
-                               type = "ordered", gap = 0, ...) {
+geom_waffle0 <- function(mapping = NULL, data = NULL, stat = "waffle",
+                         position = "identity", na.rm = FALSE,
+                         show.legend = NA, inherit.aes = TRUE,
+                         brick_layers = 100, bricks_per_layer = 4,
+                         type = "ordered", gap = 0, col_width = 0.9,
+                         ...) {
   layer(
-    geom = GeomBrickWaffle,
+    geom = GeomWaffle,
     data = data,
     mapping = mapping,
     stat = stat,
@@ -238,15 +245,16 @@ geom_brick_waffle0 <- function(mapping = NULL, data = NULL, stat = "brick_waffle
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      col_width = col_width,
       na.rm = na.rm,
       ...)
   )
 }
 
 #' GeomBrick
-GeomBrickWaffle0 <- ggproto(
-  "GeomBrickWaffle0",
-  GeomBrickWaffle,
+GeomWaffle0 <- ggproto(
+  "GeomWaffle0",
+  GeomWaffle,
   default_aes = aes(
     colour = "black",
     fill = "grey30",
@@ -257,5 +265,6 @@ GeomBrickWaffle0 <- ggproto(
   brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = 0
+  gap = 0,
+  col_width = 0.9
 )

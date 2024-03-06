@@ -2,7 +2,7 @@
 % Please edit documentation in R/coords.R
 \name{coord_brick}
 \alias{coord_brick}
-\alias{coord_brick_waffle}
+\alias{coord_waffle}
 \title{Cartesian coordinates with fixed "aspect ratio"}
 \usage{
 coord_brick(
@@ -11,16 +11,18 @@ coord_brick(
   xlim = NULL,
   ylim = NULL,
   expand = TRUE,
-  clip = "on"
+  clip = "on",
+  col_width = 0.9
 )
 
-coord_brick_waffle(
+coord_waffle(
   bricks_per_layer = 4,
   ratio = NULL,
   xlim = NULL,
   ylim = NULL,
   expand = TRUE,
-  clip = "on"
+  clip = "on",
+  col_width = 0.9
 )
 }
 \arguments{
@@ -40,6 +42,9 @@ setting of `"on"` (the default) means yes, and a setting of `"off"`
 means no. In most cases, the default of `"on"` should not be changed,
 as setting `clip = "off"` can cause unexpected results. It allows
 drawing of data points anywhere on the plot, including in the plot margins.}
+
+\item{col_width}{Column width. If using a different `col_width` in `geom_brick`
+use the same `col_width` here to ensure correct scaling.}
 }
 \description{
 A fixed scale coordinate system forces a specified ratio similar to
@@ -66,10 +71,10 @@ plt
 plt \%>\%
   coord_brick(6)
 
-# The same using `geom_brick_waffle`
+# The same using `geom_waffle`
 plt <- mpg \%>\%
   count(class, drv) \%>\%
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), bricks_per_layer = 6) +
-  coord_brick_waffle(6)
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6) +
+  coord_waffle(6)
 }

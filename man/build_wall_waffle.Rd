@@ -4,7 +4,14 @@
 \alias{build_wall_waffle}
 \title{Build the wall}
 \usage{
-build_wall_waffle(height, width, start_height = 0, r = 1, gap = NULL)
+build_wall_waffle(
+  height,
+  width,
+  start_height = 0,
+  r = 1,
+  gap = NULL,
+  col_width = 0.9
+)
 }
 \arguments{
 \item{height}{Height of the wall.}
@@ -16,6 +23,8 @@ build_wall_waffle(height, width, start_height = 0, r = 1, gap = NULL)
 \item{r}{Scale factor.}
 
 \item{gap}{The space between bricks.}
+
+\item{col_width}{Column width.}
 }
 \description{
 Build the wall

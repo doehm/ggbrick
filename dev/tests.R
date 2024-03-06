@@ -4,22 +4,22 @@ library(dplyr)
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n)) +
-  coord_brick_waffle()
+  geom_waffle(aes(class, n)) +
+  coord_waffle()
 
 # defaults
 g4 <- mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), colour = "black", gap = NULL) +
-  coord_brick_waffle()
+  geom_waffle(aes(class, n, fill = drv), colour = "black", gap = NULL) +
+  coord_waffle()
 
 # different bricks per layer
 g6 <- mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, colour = "black", gap = NULL) +
-  coord_brick_waffle(6)
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, colour = "black", gap = NULL) +
+  coord_waffle(6)
 
 g4 / g6
 
@@ -27,40 +27,40 @@ g4 / g6
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), colour = "black", gap = 0.02) +
-  coord_brick_waffle()
+  geom_waffle(aes(class, n, fill = drv), colour = "black", gap = 0.02) +
+  coord_waffle()
 
 # different gap and bricks per layer
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, colour = "black", gap = 0.02) +
-  coord_brick_waffle(6)
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, colour = "black", gap = 0.02) +
+  coord_waffle(6)
 
 # different gap = 0
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), colour = "black", gap = 0) +
-  coord_brick_waffle()
+  geom_waffle(aes(class, n, fill = drv), colour = "black", gap = 0) +
+  coord_waffle()
 
 # layres 6 gap = 0
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv), bricks_per_layer = 8, colour = "black", gap = 0) +
-  coord_brick_waffle(8)
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 8, colour = "black", gap = 0) +
+  coord_waffle(8)
 
 # shadow
 mpg |>
   count(class, drv) |>
   ggplot() +
   with_shadow(
-    geom_brick_waffle(aes(class, n, fill = drv), gap = 0.012),
+    geom_waffle(aes(class, n, fill = drv), gap = 0.012),
     x_offset = 2,
     y_offset = 2
   ) +
-  coord_brick_waffle() +
+  coord_waffle() +
   scale_fill_brewer(type = "qual")
 
 # 🧱 geom_brick -----------------------------------------------------------
@@ -97,7 +97,6 @@ g6 <- mpg |>
 
 g4 / g6
 
-
 # different bricks per layer gap = 0
 mpg |>
   count(class, drv) |>
@@ -105,11 +104,17 @@ mpg |>
   geom_brick(aes(class, n, fill = drv), bricks_per_layer = 6, gap = 0) +
   coord_brick(6)
 
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick(aes(class, 4*n, fill = drv), bricks_per_layer = 8) +
+  coord_brick(8)
+
 # different gap
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick(aes(class, n, fill = drv), colour = "black", gap = 0.02) +
+  geom_brick(aes(class, n, fill = drv), gap = 0.02) +
   coord_brick()
 
 # different gap and bricks per layer
@@ -137,15 +142,15 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle0(aes(class, n, fill = drv)) +
-  coord_brick_waffle()
+  geom_waffle0(aes(class, n, fill = drv)) +
+  coord_waffle()
 
 # different bricks per layer
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle0(aes(class, n, fill = drv), bricks_per_layer = 6) +
-  coord_brick_waffle(6)
+  geom_waffle0(aes(class, n, fill = drv), bricks_per_layer = 12) +
+  coord_waffle(12)
 
 
 # 🧱 zero -----------------------------------------------------------------
@@ -164,13 +169,67 @@ mpg |>
   geom_brick0(aes(class, n, fill = drv), bricks_per_layer = 6) +
   coord_brick(6)
 
-
-
-
 # Too many ----------------------------------------------------------------
 
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, 10*n, fill = drv)) +
-  coord_brick_waffle()
+  geom_waffle(aes(class, 10*n, fill = drv)) +
+  coord_waffle()
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle(aes(class, 10*n, fill = drv), bricks_per_layer = 12) +
+  coord_waffle(12)
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle0(aes(class, 10*n, fill = drv), bricks_per_layer = 12) +
+  coord_waffle(12)
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick(aes(class, 10*n, fill = drv)) +
+  coord_brick()
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick(aes(class, 10*n, fill = drv), bricks_per_layer = 12) +
+  coord_brick(12)
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick0(aes(class, 10*n, fill = drv), bricks_per_layer = 12) +
+  coord_brick(12)
+
+# 🩴 flip --------------------------------------------------------------------
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle0(aes(class, n, fill = drv)) +
+  coord_flip() +
+  theme(
+    aspect.ratio = 2
+  )
+
+
+# adjust width ------------------------------------------------------------
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle(aes(class, n, fill = drv), col_width = 0.5, gap = 0.02) +
+  coord_waffle(col_width = 0.5)
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle0(aes(class, n, fill = drv), col_width = 0.5) +
+  coord_waffle(col_width = 0.5)
+

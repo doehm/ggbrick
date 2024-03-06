@@ -10,6 +10,7 @@ brick_row(
   brick_height = 1,
   brick_width = 2.5,
   gap = 0.125,
+  col_width = 0.9,
   .geom = "brick"
 )
 }
@@ -23,6 +24,8 @@ brick_row(
 \item{brick_width}{Brick width.}
 
 \item{gap}{Gap between the bricks.}
+
+\item{col_width}{Column width}
 
 \item{.geom}{Geom type for layering. Either 'brick' or 'brick_waffle'}
 }

@@ -4,7 +4,7 @@
 \alias{build_wall}
 \title{Build the wall}
 \usage{
-build_wall(height, width, start_height = 0, r = 1, gap = NULL)
+build_wall(height, width, start_height = 0, r = 1, gap = NULL, col_width = 0.9)
 }
 \arguments{
 \item{height}{Height of the wall.}
@@ -16,6 +16,8 @@ build_wall(height, width, start_height = 0, r = 1, gap = NULL)
 \item{r}{Scale factor.}
 
 \item{gap}{The space between bricks.}
+
+\item{col_width}{Column_width}
 }
 \description{
 Build the wall
