@@ -88,7 +88,7 @@ build_wall_waffle <- function(n_bricks, height, bpl, gap = NULL, width = 0.9) {
   brick_height <- width/bpl*2/5
   brick_width <- width/bpl
   if(is.null(gap)) {
-    gap <- brick_height/10
+    gap <- brick_height/5
   }
   scale <- 1/brick_height*bpl
   map_dfr(seq(0, height-1, 1), ~{

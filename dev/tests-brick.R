@@ -67,3 +67,20 @@ mpg |>
   ggplot() +
   geom_brick(aes(class, n, fill = drv), width = 0.5) +
   coord_brick(width = 0.5)
+
+
+# shadow ------------------------------------------------------------------
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  with_inner_glow(
+    with_shadow(
+      geom_brick(aes(class, n, fill = drv)),
+      x_offset = 4,
+      y_offset = 4
+    ),
+    sigma = 6
+  ) +
+  coord_brick() +
+  scale_fill_brewer(type = "qual")

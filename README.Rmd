@@ -77,7 +77,7 @@ ggplot() +
 
 You can control with width with `width`. To keep the right aspect ratio also use `coord_brick(width = 0.5)`
 
-```{r, fig.width=12}
+```{r, fig.width=14}
 mpg |>
   count(class, drv) |>
   ggplot() +
@@ -91,7 +91,7 @@ mpg |>
 
 To create a more familiar waffle chart you can use `geom_waffle0()` and `geom_waffle()`. `geom_waffle0()` is just `geom_waffle()` with `gap = 0`.
 
-```{r, eval = TRUE}
+```{r, eval = TRUE, fig.width=14}
 mpg |>
   count(class, drv) |>
   ggplot() +
@@ -109,7 +109,7 @@ mpg |>
 
 To flip the coords you'll have to use `theme(aspect.ratio = x)` to maintain the brick aspect ratio (sqaure in the case of waffle)
 
-```{r}
+```{r, fig.width=14}
 mpg |>
   count(class, drv) |>
   ggplot() +
