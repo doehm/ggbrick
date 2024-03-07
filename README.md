@@ -102,7 +102,7 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle(aes(class, n, fill = drv))+
+  geom_waffle(aes(class, n, fill = drv), gap = 0.02)+
   coord_waffle() +
   scale_fill_manual(values = d10)
 ```
