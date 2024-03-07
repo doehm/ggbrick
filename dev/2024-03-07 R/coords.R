@@ -16,8 +16,8 @@
 #'   means no. In most cases, the default of `"on"` should not be changed,
 #'   as setting `clip = "off"` can cause unexpected results. It allows
 #'   drawing of data points anywhere on the plot, including in the plot margins.
-#' @param width Column width. If using a different `width` in `geom_brick`
-#'   use the same `width` here to ensure correct scaling.
+#' @param col_width Column width. If using a different `col_width` in `geom_brick`
+#'   use the same `col_width` here to ensure correct scaling.
 #' @name coord_brick
 #' @export
 #' @examples
@@ -47,11 +47,11 @@ coord_brick <- function(
     ylim = NULL,
     expand = TRUE,
     clip = "on",
-    width = 0.9
+    col_width = 0.9
     ) {
   if(is.null(ratio)) {
     d <- bricks_per_layer^2/4
-    ratio <- width/(d*10)
+    ratio <- col_width/(d*10)
   }
   ggproto(NULL, CoordFixed,
           limits = list(x = xlim, y = ylim),
@@ -76,15 +76,15 @@ CoordBrick <- ggproto("CoordBrick", CoordCartesian,
 #' @param ratio aspect ratio, expressed as `y / x`
 #' @examples
 #' # The same using `geom_waffle`
-#' mpg %>%
+#' plt <- mpg %>%
 #'   count(class, drv) %>%
 #'   ggplot() +
 #'   geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6) +
 #'   coord_waffle(6)
-coord_waffle <- function(bricks_per_layer = 4, ratio = NULL, xlim = NULL, ylim = NULL, expand = TRUE, clip = "on", width = 0.9) {
+coord_waffle <- function(bricks_per_layer = 4, ratio = NULL, xlim = NULL, ylim = NULL, expand = TRUE, clip = "on", col_width = 0.9) {
   if(is.null(ratio)) {
     d <- bricks_per_layer^2/4
-    ratio <- width/(d*10)*2.5
+    ratio <- 1/(d*10)*2.5*col_width
   }
   ggproto(NULL, CoordFixed,
           limits = list(x = xlim, y = ylim),

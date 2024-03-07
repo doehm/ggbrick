@@ -18,7 +18,7 @@ stat_brick(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
+  width = 0.9,
   bricks_per_layer = 4,
   type = "ordered",
   gap = NULL,
@@ -33,8 +33,8 @@ geom_brick(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
   bricks_per_layer = 4,
+  width = 0.9,
   type = "ordered",
   gap = NULL,
   ...
@@ -48,10 +48,10 @@ geom_brick0(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
   gap = 0,
+  width = 0.9,
   ...
 )
 
@@ -63,11 +63,10 @@ stat_waffle(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
   gap = NULL,
-  col_width = 0.9,
+  width = 0.9,
   ...
 )
 
@@ -79,11 +78,10 @@ geom_waffle(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
   gap = NULL,
-  col_width = 0.9,
+  width = 0.9,
   ...
 )
 
@@ -95,11 +93,10 @@ geom_waffle0(
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
   gap = 0,
-  col_width = 0.9,
+  width = 0.9,
   ...
 )
 }
@@ -144,8 +141,7 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. [borders()].}
 
-\item{brick_layers}{The number of brick layers. Default is the height of the column divded by
-the number of bricks per layer.}
+\item{width}{Column width. Default `0.9`.}
 
 \item{bricks_per_layer}{The number of bricks per layer. Default 4.}
 
@@ -159,8 +155,6 @@ the number of bricks per layer.}
 layer, either as a `ggproto` `Geom` subclass or as a string naming the
 stat stripped of the `stat_` prefix (e.g. `"count"` rather than
 `"stat_count"`)}
-
-\item{col_width}{Column width. Default `0.9`.}
 }
 \value{
 Grob

@@ -1,24 +1,23 @@
 #' Brick row
 #'
 #' @param layer Brick layer.
-#' @param width Number of bricks in the layer.
+#' @param bpl Number of bricks in the layer.
 #' @param brick_height Brick height.
 #' @param brick_width Brick width.
 #' @param gap Gap between the bricks.
-#' @param col_width Column width
+#' @param width Column width
 #' @param .geom Geom type for layering. Either 'brick' or 'brick_waffle'
-brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125, col_width = 0.9, .geom = "brick") {
-  rx <- brick_width/brick_height
-  ry <- switch(
+brick_row <- function(layer, bpl, brick_height = 1, brick_width = 2.5, gap = 0.125, width = 0.9, .geom = "brick") {
+  gap_x <- switch(
     .geom,
-    "waffle" = col_width,
-    "brick" = rx
+    "waffle" = gap*sqrt(bpl),
+    "brick" = gap
   )
   tibble(
-    xmin = seq(1, 1+(width-1)*brick_width, brick_width),
-    xmax = xmin + brick_width - gap*rx,
-    ymin = 0 + layer*brick_height,
-    ymax = brick_height + layer*brick_height - gap*ry,
+    xmin = seq(1, 1+(bpl-1)*brick_width, brick_width),
+    xmax = xmin + brick_width - gap_x,
+    ymin = layer*brick_height,
+    ymax = brick_height + layer*brick_height - gap,
     brick_type = 1
   )
 }
@@ -26,110 +25,88 @@ brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0
 #' half brick row
 #'
 #' @param layer Brick layer.
-#' @param width Number of bricks in the layer.
+#' @param bpl Number of bricks in the layer.
 #' @param brick_height Brick height.
 #' @param brick_width Brick width.
-#' @param col_width Column_width
+#' @param width Column_width
 #' @param gap Gap between the bricks.
-half_brick_row <- function(layer, width, brick_height = 1, brick_width = 2.5, gap = 0.125, col_width = 0.9) {
-  rx <- brick_width/brick_height
-  ry <- rx*col_width
+half_brick_row <- function(layer, bpl, brick_height = 1, brick_width = 2.5, gap = 0.125, width = 0.9) {
   tibble(
-    xmin = c(1, seq(1, 1+(width-1)*brick_width, brick_width) + brick_width/2),
-    xmax = c(1+brick_width/2, seq(1, 1+(width-2)*brick_width, brick_width) + brick_width*3/2, brick_width*width+1)-gap*rx,
-    ymin = 0 + layer*brick_height,
-    ymax = brick_height + layer*brick_height - gap*ry,
-    brick_type = c(0.5, rep(1, width-1), 0.5)
+    xmin = c(1, seq(1, 1+(bpl-1)*brick_width, brick_width) + brick_width/2),
+    xmax = c(1+brick_width/2, seq(1, 1+(bpl-2)*brick_width, brick_width) + brick_width*3/2, brick_width*bpl+1) - gap,
+    ymin = layer*brick_height,
+    ymax = brick_height + layer*brick_height - gap,
+    brick_type = c(0.5, rep(1, bpl-1), 0.5)
   )
 }
+
+
+
+# build walls -------------------------------------------------------------
 
 #' Build the wall
 #'
 #' @param height Height of the wall.
-#' @param width Width of the wall in number of bricks.
-#' @param start_height Starting height of the wall.
-#' @param r Scale factor.
-#' @param col_width Column_width
+#' @param width Column_width
+#' @param n_bricks Number of bricks
+#' @param bpl Bricks per layer
 #' @param gap The space between bricks.
-build_wall <- function(height, width, start_height = 0, r = 1, gap = NULL, col_width = 0.9) {
-  brick_height <- 0.9/width*2/5
-  brick_width <- 0.9/width
+build_wall <- function(n_bricks, height, bpl, gap = NULL, width = 0.9) {
+  brick_height <- width/bpl*2/5
+  brick_width <- width/bpl
   if(is.null(gap)) {
-    gap <- brick_height/10
+    gap <- brick_height/5
   }
-  scale <- 1/brick_height*width*1/r
+  scale <- 1/brick_height*bpl
   map_dfr(seq(0, height-1, 1), ~{
-    if((.x+start_height) %% 2 == 0) {
-      brick_row(.x, width, brick_height*r, brick_width, gap, col_width = col_width, .geom = "brick")
+    if(.x %% 2 == 0) {
+      brick_row(.x, bpl, brick_height, brick_width, gap, width = width, .geom = "brick")
     } else {
-      half_brick_row(.x, width, brick_height*r, brick_width, gap, col_width = col_width)
+      half_brick_row(.x, bpl, brick_height, brick_width, gap, width = width)
     }
   }) %>%
     mutate(
       brick_id = 1:n(),
-      xmin = xmin-col_width/2,
-      xmax = xmax-col_width/2,
-      ymin = ymin*scale + start_height,
-      ymax = ymax*scale + start_height
-    )
+      xmin = xmin-width/2,
+      xmax = xmax-width/2,
+      ymin = ymin*scale,
+      ymax = ymax*scale
+    ) %>%
+    arrange(ymin, desc(brick_type)) %>%
+    mutate(brick_type_cm = cumsum(brick_type)) %>%
+    filter(brick_type_cm <= n_bricks)
 }
 
 #' Build the wall
 #'
 #' @param height Height of the wall.
-#' @param width Width of the wall in number of bricks.
-#' @param start_height Starting height of the wall.
-#' @param r Scale factor.
 #' @param gap The space between bricks.
-#' @param col_width Column width.
-build_wall_waffle <- function(height, width, start_height = 0, r = 1, gap = NULL, col_width = 0.9) {
-  brick_height <- col_width/width*2/5
-  brick_width <- col_width/width
+#' @param n_bricks Number of bricks
+#' @param bpl Bricks per layer
+#' @param width Column width.
+build_wall_waffle <- function(n_bricks, height, bpl, gap = NULL, width = 0.9) {
+  brick_height <- width/bpl*2/5
+  brick_width <- width/bpl
   if(is.null(gap)) {
     gap <- brick_height/10
   }
-  scale <- 1/brick_height*width*1/r
+  scale <- 1/brick_height*bpl
   map_dfr(seq(0, height-1, 1), ~{
-    brick_row(.x, width, brick_height*r, brick_width, gap, col_width = col_width, .geom = "waffle")
+    brick_row(.x, bpl, brick_height, brick_width, gap, width = width, .geom = "waffle")
   }) %>%
     mutate(
       brick_id = 1:n(),
-      xmin = xmin-col_width/2,
-      xmax = xmax-col_width/2,
-      ymin = ymin*scale + start_height,
-      ymax = ymax*scale + start_height
-    )
-}
-
-#' build wall brick by brick
-#'
-#' @param n_bricks Number of bricks.
-#' @param width Width of the wall in bricks.
-#' @param r Scale factor.
-#' @param gap The space between bricks.
-#' @param col_width Column width.
-build_wall_by_brick <- function(n_bricks, width, r = 1, gap = NULL, col_width = 0.9) {
-  ht <- ceiling(n_bricks/width)
-  build_wall(ht, width, r = r, gap = gap, col_width = col_width) %>%
+      xmin = xmin-width/2,
+      xmax = xmax-width/2,
+      ymin = ymin*scale,
+      ymax = ymax*scale
+    ) %>%
     arrange(ymin, desc(brick_type)) %>%
     mutate(brick_type_cm = cumsum(brick_type)) %>%
     filter(brick_type_cm <= n_bricks)
 }
 
-#' build wall brick by brick for the waffle style
-#'
-#' @param n_bricks Number of bricks.
-#' @param width Width of the wall in bricks.
-#' @param r Scale factor.
-#' @param gap The space between bricks.
-#' @param col_width Column width.
-build_wall_by_brick_waffle <- function(n_bricks, width, r = 1, gap = NULL, col_width = 0.9) {
-  ht <- ceiling(n_bricks/width)
-  build_wall_waffle(ht, width, r = r, gap = gap, col_width = col_width) %>%
-    arrange(ymin, desc(brick_type)) %>%
-    mutate(brick_type_cm = cumsum(brick_type)) %>%
-    filter(brick_type_cm <= n_bricks)
-}
+# other helpers -----------------------------------------------------------
 
 #' Robust round
 #'
@@ -177,7 +154,6 @@ switch_pos <- function(x, n) {
   y[starting_pos] <- x[next_pos]
   y
 }
-
 
 #' Robust random
 #'

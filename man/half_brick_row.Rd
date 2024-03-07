@@ -6,17 +6,17 @@
 \usage{
 half_brick_row(
   layer,
-  width,
+  bpl,
   brick_height = 1,
   brick_width = 2.5,
   gap = 0.125,
-  col_width = 0.9
+  width = 0.9
 )
 }
 \arguments{
 \item{layer}{Brick layer.}
 
-\item{width}{Number of bricks in the layer.}
+\item{bpl}{Number of bricks in the layer.}
 
 \item{brick_height}{Brick height.}
 
@@ -24,7 +24,7 @@ half_brick_row(
 
 \item{gap}{Gap between the bricks.}
 
-\item{col_width}{Column_width}
+\item{width}{Column_width}
 }
 \description{
 half brick row

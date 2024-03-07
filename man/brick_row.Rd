@@ -6,18 +6,18 @@
 \usage{
 brick_row(
   layer,
-  width,
+  bpl,
   brick_height = 1,
   brick_width = 2.5,
   gap = 0.125,
-  col_width = 0.9,
+  width = 0.9,
   .geom = "brick"
 )
 }
 \arguments{
 \item{layer}{Brick layer.}
 
-\item{width}{Number of bricks in the layer.}
+\item{bpl}{Number of bricks in the layer.}
 
 \item{brick_height}{Brick height.}
 
@@ -25,7 +25,7 @@ brick_row(
 
 \item{gap}{Gap between the bricks.}
 
-\item{col_width}{Column width}
+\item{width}{Column width}
 
 \item{.geom}{Geom type for layering. Either 'brick' or 'brick_waffle'}
 }

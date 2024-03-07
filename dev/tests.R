@@ -69,7 +69,7 @@ mpg |>
 g4 <- mpg |>
   count(class, drv) |>
   ggplot() +
-  with_shadow(geom_brick(aes(class, n, fill = drv), gap = NULL), x_offset = 2, y_offset = 2) +
+  geom_brick(aes(class, n, fill = drv), gap = NULL) +
   coord_brick()
 
 # different bricks per layer
@@ -121,7 +121,7 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick(aes(class, n, fill = drv), bricks_per_layer = 6, gap = 0.02) +
+  geom_brick(aes(class, n, fill = drv), bricks_per_layer = 6, gap = 0.012) +
   coord_brick(6)
 
 # shadow
@@ -218,7 +218,6 @@ mpg |>
     aspect.ratio = 2
   )
 
-
 # adjust width ------------------------------------------------------------
 
 mpg |>
@@ -233,3 +232,11 @@ mpg |>
   geom_waffle0(aes(class, n, fill = drv), col_width = 0.5) +
   coord_waffle(col_width = 0.5)
 
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle0(aes(class, n, fill = drv), col_width = 0.5, bricks_per_layer = 6) +
+  coord_flip() +
+  theme(
+    aspect.ratio = 5
+  )

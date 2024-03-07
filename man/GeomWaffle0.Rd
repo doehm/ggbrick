@@ -5,7 +5,7 @@
 \alias{GeomWaffle0}
 \title{GeomBrick}
 \format{
-An object of class \code{GeomWaffle0} (inherits from \code{GeomWaffle}, \code{GeomRect}, \code{Geom}, \code{ggproto}, \code{gg}) of length 7.
+An object of class \code{GeomWaffle0} (inherits from \code{GeomWaffle}, \code{GeomRect}, \code{Geom}, \code{ggproto}, \code{gg}) of length 6.
 }
 \usage{
 GeomWaffle0

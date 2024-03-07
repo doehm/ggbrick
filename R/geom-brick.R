@@ -9,7 +9,7 @@ utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_ty
 stat_brick <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
-                       inherit.aes = TRUE, brick_layers = 100,
+                       inherit.aes = TRUE, width = 0.9,
                        bricks_per_layer = 4, type = "ordered",
                        gap = NULL, ...) {
   layer(
@@ -21,10 +21,10 @@ stat_brick <- function(mapping = NULL, data = NULL,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      brick_layers = brick_layers,
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      width = width,
       na.rm = na.rm,
       ...
     )
@@ -37,41 +37,25 @@ StatBrick <- ggproto(
   Stat,
   required_aes = c("x", "y"),
   setup_params = function(data, params) {
-
-   dat_1 <- data %>%
-     group_by(x) %>%
-     summarise(
-       y = sum(y),
-       .groups = "drop"
-       )
-
-   if(max(dat_1$y) > 1000*params$bricks_per_layer*params$brick_layers) {
-     params$r <- (params$bricks_per_layer*params$brick_layers)/max(dat_1$y)
-     message("Number of bricks has been scaled to a maximum of ",
-             params$bricks_per_layer*params$brick_layers,
-             " bricks. 1 brick equals ", round(1/params$r, 1),
-             " units.\nTo adjust, increase the number of 'brick_layers' and/or 'bricks_per_layer'")
-   } else {
-     params$r <- 1
-   }
-
    return(params)
   },
-  compute_panel = function(data, scales, brick_layers = params$brick_layers,
+  compute_panel = function(data, scales,
                           bricks_per_layer = params$bricks_per_layer,
-                          type = params$type, r = params$r, gap = params$gap
+                          type = params$type, gap = params$gap,
+                          width = params$width
                           ) {
 
    dat_1 <- data %>%
      group_by(x, PANEL) %>%
      summarise(y = sum(y), .groups = "drop") %>%
-     mutate(y = robust_round(r*y, round(sum(r*y))))
+     mutate(y = robust_round(y, round(sum(y))))
 
    do_fill <- "fill" %in% colnames(data)
 
    dat_out <- NULL
    for(k in 1:nrow(dat_1)) {
-     x <- build_wall_by_brick(dat_1$y[k], bricks_per_layer, r = r, gap = gap, col_width = 0.9) %>%
+     ht <- ceiling(dat_1$y[k]/bricks_per_layer)
+     x <- build_wall(n_bricks = dat_1$y[k], height = ht, bpl = bricks_per_layer, gap = gap, width = width) %>%
        mutate(
          x = dat_1$x[k],
          y = dat_1$y[k],
@@ -83,7 +67,7 @@ StatBrick <- ggproto(
      if(do_fill) {
        ids <- which(data$x == dat_1$x[k])
        fill_levels <- data$fill[ids]
-       n_of_levels <- robust_round(data$y[ids]*r, sum(x$brick_type))
+       n_of_levels <- robust_round(data$y[ids], sum(x$brick_type))
 
        x$fill <- make_new_fill(fill_levels, n_of_levels, x$brick_type)
        x$fill <- switch(
@@ -113,10 +97,10 @@ GeomBrick <- ggproto(
    linetype = 1,
    alpha = NA
   ),
-  brick_layers = 100,
   bricks_per_layer = 4,
   type = "ordered",
-  gap = NULL
+  gap = NULL,
+  width = 0.9
 )
 
 #' Brick chart
@@ -162,13 +146,12 @@ GeomBrick <- ggproto(
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
 #'   the default plot specification, e.g. [borders()].
-#' @param na.rm If `FALSE` removes `NA`s from the data.
-#' @param brick_layers The number of brick layers. Default is the height of the column divded by
-#' the number of bricks per layer.
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param gap The space between bricks.
+#' @param na.rm If `FALSE` removes `NA`s from the data.
 #' @param ... Dots.
+#' @param width
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -192,7 +175,7 @@ GeomBrick <- ggproto(
 geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
-                       brick_layers = 100, bricks_per_layer = 4,
+                       bricks_per_layer = 4, width = 0.9,
                        type = "ordered", gap = NULL,
                        ...) {
   layer(
@@ -204,10 +187,10 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      brick_layers = brick_layers,
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      width = width,
       na.rm = na.rm,
       ...)
   )
@@ -218,8 +201,8 @@ geom_brick <- function(mapping = NULL, data = NULL, stat = "brick",
 geom_brick0 <- function(mapping = NULL, data = NULL, stat = "brick",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
-                       brick_layers = 100, bricks_per_layer = 4,
-                       type = "ordered", gap = 0,
+                       bricks_per_layer = 4, type = "ordered",
+                       gap = 0, width = 0.9,
                        ...) {
   layer(
     geom = GeomBrick,
@@ -230,10 +213,10 @@ geom_brick0 <- function(mapping = NULL, data = NULL, stat = "brick",
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      brick_layers = brick_layers,
       bricks_per_layer = bricks_per_layer,
       type = type,
       gap = gap,
+      width = width,
       na.rm = na.rm,
       ...)
   )
@@ -250,8 +233,8 @@ GeomBrick0 <- ggproto(
     linetype = 1,
     alpha = NA
   ),
-  brick_layers = 100,
   bricks_per_layer = 4,
+  width = 0.9,
   type = "ordered",
   gap = 0
 )

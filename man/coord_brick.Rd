@@ -12,7 +12,7 @@ coord_brick(
   ylim = NULL,
   expand = TRUE,
   clip = "on",
-  col_width = 0.9
+  width = 0.9
 )
 
 coord_waffle(
@@ -22,7 +22,7 @@ coord_waffle(
   ylim = NULL,
   expand = TRUE,
   clip = "on",
-  col_width = 0.9
+  width = 0.9
 )
 }
 \arguments{
@@ -43,8 +43,8 @@ means no. In most cases, the default of `"on"` should not be changed,
 as setting `clip = "off"` can cause unexpected results. It allows
 drawing of data points anywhere on the plot, including in the plot margins.}
 
-\item{col_width}{Column width. If using a different `col_width` in `geom_brick`
-use the same `col_width` here to ensure correct scaling.}
+\item{width}{Column width. If using a different `width` in `geom_brick`
+use the same `width` here to ensure correct scaling.}
 }
 \description{
 A fixed scale coordinate system forces a specified ratio similar to
@@ -72,7 +72,7 @@ plt \%>\%
   coord_brick(6)
 
 # The same using `geom_waffle`
-plt <- mpg \%>\%
+mpg \%>\%
   count(class, drv) \%>\%
   ggplot() +
   geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6) +

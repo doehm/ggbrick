@@ -4,9 +4,8 @@
 Create a ‘waffle’ style chart with the aesthetic of a brick wall.
 
 Usage is similar to `geom_col` where you supply counts as the height of
-the bar. Each whole brick represents 1 unit. Two half bricks equal one
-whole brick. Where the count exceeds the number of brick layers, the
-number of bricks is scaled to retain the brick wall aesthetic.
+the bar and a `fill` for a stacked bar. Each whole brick represents 1
+unit. Two half bricks equal one whole brick.
 
 ## Installation
 
@@ -68,28 +67,61 @@ ggplot() +
 
 <img src='dev/images/pic3.png'>
 
-## Waffle
-
-To create a more familiar waffle chart you can use
-`geom_brick_waffle0()` and `geom_brick_waffle()`. `geom_brick_waffle0()`
-is just `geom_brick_waffle()` with `gap = 0`.
+You can control with width with `width`. To keep the right aspect ratio
+also use `coord_brick(width = 0.5)`
 
 ``` r
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle0(aes(class, n, fill = drv))+
-  coord_brick_waffle()
+  geom_brick0(aes(class, n, fill = drv), width = 0.5) +
+  coord_brick(width = 0.5) +
+  scale_fill_manual(values = d10)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
+## Waffle
+
+To create a more familiar waffle chart you can use `geom_waffle0()` and
+`geom_waffle()`. `geom_waffle0()` is just `geom_waffle()` with
+`gap = 0`.
+
 ``` r
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick_waffle(aes(class, n, fill = drv))+
-  coord_brick_waffle()
+  geom_waffle0(aes(class, n, fill = drv))+
+  coord_waffle() +
+  scale_fill_manual(values = d10)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle(aes(class, n, fill = drv))+
+  coord_waffle() +
+  scale_fill_manual(values = d10)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+
+To flip the coords you’ll have to use `theme(aspect.ratio = x)` to
+maintain the brick aspect ratio (sqaure in the case of waffle)
+
+``` r
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_waffle0(aes(class, n, fill = drv)) +
+  scale_fill_manual(values = d10) +
+  coord_flip() +
+  theme(
+    aspect.ratio = 2
+  )
+```
+
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
