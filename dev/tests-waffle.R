@@ -54,6 +54,7 @@ mpg |>
   coord_waffle(8)
 
 # bpl = 24
+# 24 just isn't quite right
 mpg |>
   count(class, drv) |>
   ggplot() +
@@ -87,22 +88,22 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle(aes(class, n, fill = drv), col_width = 0.5) +
-  coord_waffle(col_width = 0.5)
+  geom_waffle(aes(class, n, fill = drv), width = 0.5) +
+  coord_waffle(width = 0.5)
 
 # different bricks per layer
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, col_width = 0.5) +
-  coord_waffle(6, col_width = 0.5)
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, width = 0.5) +
+  coord_waffle(6, width = 0.5)
 
-# gap
+# 0.02 gap + 6 bpl + 0.75 width
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle(aes(class, n, fill = drv), gap = 0.02) +
-  coord_waffle()
+  geom_waffle(aes(class, n, fill = drv), bricks_per_layer = 6, gap = 0.02, width = 0.75) +
+  coord_waffle(6, width = 0.75)
 
 # shadow ------------------------------------------------------------------
 

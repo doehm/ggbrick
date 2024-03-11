@@ -1,3 +1,5 @@
+library(ggplot2)
+library(ggfx)
 library(patchwork)
 library(dplyr)
 
@@ -59,15 +61,12 @@ mpg |>
   geom_brick0(aes(class, n, fill = drv), bricks_per_layer = 8) +
   coord_brick(8)
 
-
 # width
-
 mpg |>
   count(class, drv) |>
   ggplot() +
   geom_brick(aes(class, n, fill = drv), width = 0.5) +
   coord_brick(width = 0.5)
-
 
 # shadow ------------------------------------------------------------------
 
@@ -76,7 +75,7 @@ mpg |>
   ggplot() +
   with_inner_glow(
     with_shadow(
-      geom_brick(aes(class, n, fill = drv)),
+      geom_brick(aes(class, n, fill = drv), type = "random"),
       x_offset = 4,
       y_offset = 4
     ),
