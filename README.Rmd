@@ -107,7 +107,7 @@ mpg |>
   scale_fill_manual(values = d10)
 ```
 
-To flip the coords you'll have to use `theme(aspect.ratio = x)` to maintain the brick aspect ratio (sqaure in the case of waffle)
+To flip the coords you'll have to use `theme(aspect.ratio = x)` to maintain the brick aspect ratio (square in the case of waffle)
 
 ```{r, fig.width=14}
 mpg |>

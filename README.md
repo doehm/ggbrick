@@ -110,7 +110,7 @@ mpg |>
 ![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 To flip the coords you’ll have to use `theme(aspect.ratio = x)` to
-maintain the brick aspect ratio (sqaure in the case of waffle)
+maintain the brick aspect ratio (square in the case of waffle)
 
 ``` r
 mpg |>
