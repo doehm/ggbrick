@@ -150,8 +150,21 @@ GeomBrick <- ggproto(
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param gap The space between bricks.
 #' @param na.rm If `FALSE` removes `NA`s from the data.
+#' @param width Column width. Default value is `0.9`.
 #' @param ... Dots.
-#' @param width
+#'
+#' @section Aesthetics:
+#' `geom_brick()` understands the following aesthetics (required aesthetics are in bold):
+#' \itemize{
+#' \item{\strong{x}}
+#' \item{\strong{y}}
+#' \item{alpha}
+#' \item{colour}
+#' \item{fill}
+#' \item{group}
+#' \item{linetype}
+#' \item{linewidth}
+#' }
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -159,7 +172,7 @@ GeomBrick <- ggproto(
 #' @importFrom stats dnorm
 #' @importFrom utils tail
 #'
-#' @return Grob
+#' @return ggplot object
 #' @export
 #'
 #' @name brick

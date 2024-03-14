@@ -5,7 +5,7 @@ utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_ty
 #'
 #' @param geom Geom
 #'
-#' @rdname brick
+#' @rdname waffle
 stat_waffle <- function(mapping = NULL, data = NULL,
                        geom = "rect", position = "identity",
                        na.rm = FALSE, show.legend = NA,
@@ -82,10 +82,6 @@ StatWaffle <- ggproto(
      dat_out <- rbind(dat_out, x)
    }
 
-   # print messages
-   # browser()
-   # message(message_bank$gap)
-
    dat_out$y <- max(dat_out$ymax)
 
    return(dat_out)
@@ -159,6 +155,19 @@ GeomWaffle <- ggproto(
 #' @param na.rm If `FALSE` removes `NA`s from the data.
 #' @param ... Dots.
 #'
+#' @section Aesthetics:
+#' `geom_waffle()` understands the following aesthetics (required aesthetics are in bold):
+#' \itemize{
+#' \item{\strong{x}}
+#' \item{\strong{y}}
+#' \item{alpha}
+#' \item{colour}
+#' \item{fill}
+#' \item{group}
+#' \item{linetype}
+#' \item{linewidth}
+#' }
+#'
 #' @import dplyr
 #' @import ggplot2
 #' @importFrom purrr map_dfr
@@ -166,10 +175,10 @@ GeomWaffle <- ggproto(
 #' @importFrom utils tail
 #' @importFrom glue glue
 #'
-#' @return Grob
+#' @return ggplot object
 #' @export
 #'
-#' @name brick
+#' @name waffle
 #'
 #' @examples
 #' library(ggplot2)
@@ -177,7 +186,8 @@ GeomWaffle <- ggproto(
 #' mpg %>%
 #'   count(class, drv) %>%
 #'   ggplot() +
-#'   geom_waffle(aes(class, n, fill = drv))
+#'   geom_waffle(aes(class, n, fill = drv)) +
+#'   coord_waffle()
 geom_waffle <- function(mapping = NULL, data = NULL, stat = "waffle",
                        position = "identity", na.rm = FALSE,
                        show.legend = NA, inherit.aes = TRUE,
@@ -203,7 +213,7 @@ geom_waffle <- function(mapping = NULL, data = NULL, stat = "waffle",
 }
 
 #' @export
-#' @rdname brick
+#' @rdname waffle
 geom_waffle0 <- function(mapping = NULL, data = NULL, stat = "waffle",
                          position = "identity", na.rm = FALSE,
                          show.legend = NA, inherit.aes = TRUE,

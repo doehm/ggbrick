@@ -20,6 +20,7 @@
 #'   use the same `width` here to ensure correct scaling.
 #' @name coord_brick
 #' @export
+#' @return ggplot object
 #' @examples
 #' # ensures that the ranges of axes are equal to the specified ratio by
 #'
@@ -73,7 +74,6 @@ CoordBrick <- ggproto("CoordBrick", CoordCartesian,
 #'
 #' @rdname coord_brick
 #' @export
-#' @param ratio aspect ratio, expressed as `y / x`
 #' @examples
 #' # The same using `geom_waffle`
 #' mpg %>%

@@ -26,29 +26,32 @@ coord_waffle(
 )
 }
 \arguments{
-\item{bricks_per_layer}{Number of bricks per layer. Should match the `bricks_per_layer`
-specification in `geom_brick`. Default is `4`.}
+\item{bricks_per_layer}{Number of bricks per layer. Should match the \code{bricks_per_layer}
+specification in \code{geom_brick}. Default is \code{4}.}
 
-\item{ratio}{aspect ratio, expressed as `y / x`}
+\item{ratio}{aspect ratio, expressed as \code{y / x}}
 
 \item{xlim, ylim}{Limits for the x and y axes.}
 
-\item{expand}{If `TRUE`, the default, adds a small expansion factor to
-the limits to ensure that data and axes don't overlap. If `FALSE`,
-limits are taken exactly from the data or `xlim`/`ylim`.}
+\item{expand}{If \code{TRUE}, the default, adds a small expansion factor to
+the limits to ensure that data and axes don't overlap. If \code{FALSE},
+limits are taken exactly from the data or \code{xlim}/\code{ylim}.}
 
 \item{clip}{Should drawing be clipped to the extent of the plot panel? A
-setting of `"on"` (the default) means yes, and a setting of `"off"`
-means no. In most cases, the default of `"on"` should not be changed,
-as setting `clip = "off"` can cause unexpected results. It allows
+setting of \code{"on"} (the default) means yes, and a setting of \code{"off"}
+means no. In most cases, the default of \code{"on"} should not be changed,
+as setting \code{clip = "off"} can cause unexpected results. It allows
 drawing of data points anywhere on the plot, including in the plot margins.}
 
-\item{width}{Column width. If using a different `width` in `geom_brick`
-use the same `width` here to ensure correct scaling.}
+\item{width}{Column width. If using a different \code{width} in \code{geom_brick}
+use the same \code{width} here to ensure correct scaling.}
+}
+\value{
+ggplot object
 }
 \description{
 A fixed scale coordinate system forces a specified ratio similar to
-`coord_fixed`. It holds the coordinates fixed at the right ratio
+\code{coord_fixed}. It holds the coordinates fixed at the right ratio
 to ensure each brick is of the right dimensions.
 }
 \examples{
