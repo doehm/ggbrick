@@ -30,7 +30,7 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_brick(aes(class, n, fill = drv), gap = 0.02) +
+  geom_brick(aes(class, n, fill = drv), gap = 0.04) +
   coord_brick()
 
 # different bricks per layer
@@ -83,3 +83,9 @@ mpg |>
   ) +
   coord_brick() +
   scale_fill_brewer(type = "qual")
+
+mpg |>
+  count(class, drv) |>
+  ggplot() +
+  geom_brick(aes(class, n, fill = drv), type = "random") +
+  coord_brick()

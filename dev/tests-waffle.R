@@ -8,7 +8,7 @@ library(dplyr)
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle(aes(class, n, fill = drv)) +
+  geom_waffle(aes(class, n, fill = drv), linewidth = 0.1) +
   coord_waffle()
 
 # different bricks per layer
@@ -66,10 +66,10 @@ mpg |>
 mpg |>
   count(class, drv) |>
   ggplot() +
-  geom_waffle0(aes(class, n, fill = drv)) +
+  geom_waffle0(aes(class, n, fill = drv), linewidth = 0.1) +
   coord_flip() +
   theme(
-    aspect.ratio = 2
+    aspect.ratio = 1.8
   )
 
 mpg |>
@@ -78,7 +78,7 @@ mpg |>
   geom_waffle(aes(class, n, fill = drv)) +
   coord_flip() +
   theme(
-    aspect.ratio = 2
+    aspect.ratio = 1.8
   )
 
 
