@@ -113,7 +113,7 @@ GeomWaffle <- ggproto(
 #' the count exceeds the number of brick layers, the number of bricks is scaled
 #' to retain the brick wall aesthetic.
 #'
-#' @param mapping Set of aesthetic mappings created by [aes()]. If specified and
+#' @param mapping Set of aesthetic mappings created by aes(). If specified and
 #'   `inherit.aes = TRUE` (the default), it is combined with the default mapping
 #'   at the top level of the plot. You must supply `mapping` if there is no plot
 #'   mapping.
@@ -121,11 +121,11 @@ GeomWaffle <- ggproto(
 #'    options:
 #'
 #'    If `NULL`, the default, the data is inherited from the plot
-#'    data as specified in the call to [ggplot()].
+#'    data as specified in the call to ggplot().
 #'
 #'    A `data.frame`, or other object, will override the plot
 #'    data. All objects will be fortified to produce a data frame. See
-#'    [fortify()] for which variables will be created.
+#'    fortify() for which variables will be created.
 #'
 #'    A `function` will be called with a single argument,
 #'    the plot data. The return value must be a `data.frame`, and
@@ -147,7 +147,7 @@ GeomWaffle <- ggproto(
 #' @param inherit.aes If `FALSE`, overrides the default aesthetics,
 #'   rather than combining with them. This is most useful for helper functions
 #'   that define both data and aesthetics and shouldn't inherit behaviour from
-#'   the default plot specification, e.g. [borders()].
+#'   the default plot specification, e.g. borders().
 #' @param bricks_per_layer The number of bricks per layer. Default 4.
 #' @param type The type of fill ordering. one of 'ordered', 'random' or 'soft_random', Default 'ordered'
 #' @param gap The space between bricks.
