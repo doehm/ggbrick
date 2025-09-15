@@ -1,7 +1,7 @@
 Package: ggbrick
 Type: Package
 Title: Waffle Style Chart with a Brick Layout in 'ggplot2'
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
   person(given = "Daniel",
          family = "Oehm",
