@@ -1,5 +1,5 @@
 utils::globalVariables(c("xmin", "xmax", "ymin", "ymax", 'brick_type', 'brick_type_cm',
-                         'tail', 'dnorm', "new_x", "val_cm"))
+                         'tail', 'dnorm', "new_x", "val_cm", "id"))
 
 #' stat_brick
 #'
