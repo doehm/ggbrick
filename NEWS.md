@@ -1,5 +1,3 @@
-# ggbrick 0.3.0
+# ggbrick 0.3.1
 
-* Release to CRAN
-* Create a 'waffle' style chart with the aesthetic of a brick wall.
-* Also includes a more standard 'waffle' geom.
+* Fix for dplyr::id update
